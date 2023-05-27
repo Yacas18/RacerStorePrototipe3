@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">RacerStore</string>
+    <string name="log_user">Inicio de sesión</string>
+    <string name="name">Nombre de Usuario</string>
+    <string name="place_nam">Ingrese su nombre de Usuario</string>
+    <string name="pass">Contraseña</string>
+    <string name="place_pass">Ingresa tu contraseña</string>
+    <string name="new_log">Iniciar Sesión</string>
+    <string name="logo">Contenido del logo</string>
+    <string name="place_nam2">Ingrese código o descripción</string>
+    <string name="search_prod">Buscar producto</string>
+</resources>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="70dp"
+    android:theme="@style/Theme">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="@string/log_user"
+        android:textAlignment="center"
+        android:textSize="24sp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="109dp"
+        android:src="@drawable/logoracer"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/logo" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/name"
+        android:textSize="18sp" />
+
+    <EditText
+        android:layout_width="273dp"
+        android:layout_height="wrap_content"
+        android:autofillHints="username"
+        android:elegantTextHeight="false"
+        android:hint="@string/place_nam"
+        android:inputType="text"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:theme="@style/Theme.foo" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/pass"
+        android:textSize="18sp" />
+
+    <EditText
+        android:layout_width="273dp"
+        android:layout_height="wrap_content"
+        android:autofillHints="password"
+        android:hint="@string/place_pass"
+        android:inputType="textPassword"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:theme="@style/Theme.foo" />
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="273dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:background="@color/racer"
+        android:text="@string/new_log"
+        android:textColor="@color/white" />
+
+</LinearLayout>
