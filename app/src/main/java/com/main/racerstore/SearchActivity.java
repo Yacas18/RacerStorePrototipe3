@@ -1,20 +1,14 @@
 package com.main.racerstore;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.DriverManager;
 
 public class SearchActivity extends AppCompatActivity {
-    private static final String URL = "jdbc:sqlserver://localhost:PUERTO;databaseName=RacerStore";
-    private static final String USER = "TU_USUARIO";
-    private static final String PASSWORD = "TU_CONTRASEÑA";
     private EditText tbuscar;
     private Button search;
 
@@ -26,58 +20,22 @@ public class SearchActivity extends AppCompatActivity {
         tbuscar = findViewById(R.id.tbuscar);
         search = findViewById(R.id.search);
 
-        search.setOnClickListener(new View.OnClickListener() {
+        Button btnSearch = findViewById(R.id.search);
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String textoBusqueda = tbuscar.getText().toString().trim();
-                // Realizar búsqueda en la tabla de productos con el texto de búsqueda
-                searchProducts(textoBusqueda);
+                // Crear un Intent para abrir la actividad de inicio de sesión
+                Intent intent = new Intent(SearchActivity.this, Result.class);
+                startActivity(intent);
             }
         });
     }
+
     private void searchProducts(String tbuscar) {
-
-        try {
-            // Establecer la conexión con la base de datos
-            Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-
-            // Definir la consulta SQL para buscar coincidencias
-            String query = "SELECT * FROM productos WHERE codigo LIKE ? OR " +
-                    "categoria LIKE ? OR " +
-                    "nombre LIKE ? OR " +
-                    "descripcion LIKE ?";
-
-            // Crear una sentencia preparada con los parámetros de búsqueda
-            PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1, "%" + search + "%");
-            stmt.setString(2, "%" + search + "%");
-            stmt.setString(3, "%" + search + "%");
-            stmt.setString(4, "%" + search + "%");
-
-            // Ejecutar la consulta y obtener los resultados
-            ResultSet rs = stmt.executeQuery();
-
-            // Recorrer los resultados y mostrar cada fila
-            while (rs.next()) {
-                int codigo = rs.getInt("codigo");
-                String categoria = rs.getString("categoria");
-                String nombre = rs.getString("nombre");
-                String descripcion = rs.getString("descripcion");
-
-                // Mostrar los datos de la fila de la coincidencia
-                Log.d("Producto", "Código: " + codigo);
-                Log.d("Producto", "Categoría: " + categoria);
-                Log.d("Producto", "Nombre: " + nombre);
-                Log.d("Producto", "Descripción: " + descripcion);
-            }
-
-            // Cerrar los recursos
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        // Aquí puedes agregar la lógica para buscar productos en la base de datos o realizar cualquier otra operación necesaria
+        // Como se eliminó la parte de conexión y consultas SQL, esta función debe ser implementada según tus necesidades
+        // Puedes utilizar métodos de acceso a datos como SQLite, Room, o utilizar servicios web para obtener los datos de productos.
+        // Recuerda adaptar el código según el método que elijas para interactuar con la base de datos o fuente de datos.
     }
-
 }

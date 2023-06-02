@@ -13,7 +13,19 @@
         <item name="android:statusBarColor">@color/black</item>
         <!-- Customize your theme here. -->
     </style>
+
     <style name="Theme.foo">
         <item name="colorAccent">#ff0000</item>
+    </style>
+
+    <style name="Theme.Fullscreen" parent="Theme">
+        <item name="android:actionBarStyle">@style/Widget.Theme.ActionBar.Fullscreen</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+    </style>
+
+    <style name="ThemeOverlay.RacerStore.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
     </style>
 </resources>

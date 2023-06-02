@@ -9,4 +9,7 @@
     <string name="logo">Contenido del logo</string>
     <string name="place_nam2">Ingrese código o descripción</string>
     <string name="search_prod">Buscar producto</string>
+    <string name="title_activity_splash">Splash_Activity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
