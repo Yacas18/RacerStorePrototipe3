@@ -29,8 +29,6 @@
             android:name=".SearchActivity" />
         <activity
             android:name=".Result" />
-        <activity
-            android:name=".DBHelper" />
     </application>
 
 </manifest>

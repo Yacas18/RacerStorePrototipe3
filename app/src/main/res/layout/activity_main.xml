@@ -28,6 +28,7 @@
         android:textSize="18sp" />
 
     <EditText
+        android:id="@+id/log"
         android:layout_width="273dp"
         android:layout_height="wrap_content"
         android:autofillHints="username"
@@ -46,6 +47,7 @@
         android:textSize="18sp" />
 
     <EditText
+        android:id="@+id/pass"
         android:layout_width="273dp"
         android:layout_height="wrap_content"
         android:autofillHints="password"
