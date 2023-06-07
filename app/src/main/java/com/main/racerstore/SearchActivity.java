@@ -6,11 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -89,7 +92,7 @@ public class SearchActivity extends AppCompatActivity {
                                 LayoutInflater inflater = LayoutInflater.from(SearchActivity.this);
                                 View resultView = inflater.inflate(R.layout.result, null);
 
-                                // Encontrar el LinearLayout llProductsContainer utilizando findViewById en resultView
+                                // Encontrar el LinearLayout llProductsContainer en resultView
                                 LinearLayout llProductsContainer = resultView.findViewById(R.id.llProductsContainer);
 
                                 // Limpiar el LinearLayout antes de agregar nuevos elementos
@@ -105,17 +108,30 @@ public class SearchActivity extends AppCompatActivity {
                                     String descripcion = jsonObject.getString("descripcion");
                                     String imgrt = jsonObject.getString("imgrt");
 
+                                    // Crear un LinearLayout horizontal para contener la imagen y los datos del producto
+                                    LinearLayout productLayout = new LinearLayout(SearchActivity.this);
+                                    productLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                                    // Crear un ImageView para mostrar la imagen
+                                    ImageView ivProductImage = new ImageView(SearchActivity.this);
+                                    ivProductImage.setLayoutParams(new LinearLayout.LayoutParams(500, 500)); // Ajusta el tamaño según tus necesidades
+                                    // Utiliza una biblioteca de carga de imágenes como Picasso o Glide para cargar la imagen desde el enlace (imgrt)
+                                    // Ejemplo con Picasso:
+                                    Picasso.get().load(imgrt).into(ivProductImage);
+
                                     // Crear un TextView para mostrar los datos del producto
                                     TextView tvProduct = new TextView(SearchActivity.this);
                                     tvProduct.setText("Código: " + codigo + "\n" +
                                             "Categoría: " + categoria + "\n" +
                                             "Nombre: " + nombre + "\n" +
-                                            "Descripción: " + descripcion + "\n" +
-                                            "Imágen: " + imgrt + "\n");
-                                    tvProduct.setTextSize(16);
+                                            "Descripción: " + descripcion + "\n");
 
-                                    // Agregar el LinearLayout al LinearLayout llProductsContainer
-                                    llProductsContainer.addView(tvProduct);
+                                    // Agregar la imagen y el texto al LinearLayout horizontal
+                                    productLayout.addView(ivProductImage);
+                                    productLayout.addView(tvProduct);
+
+                                    // Agregar el LinearLayout horizontal al LinearLayout llProductsContainer
+                                    llProductsContainer.addView(productLayout);
                                 }
 
                                 // Establecer el contenido de la actividad como la vista inflada resultView
