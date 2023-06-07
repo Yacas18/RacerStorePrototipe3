@@ -6,14 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,6 +47,13 @@ public class SearchActivity extends AppCompatActivity {
                 searchProducts(searchTerm);
             }
         });
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        // Limpiar y reiniciar los componentes necesarios
+        tbuscar.setText("");
     }
 
     private void searchProducts(String searchTerm) {
@@ -110,8 +114,6 @@ public class SearchActivity extends AppCompatActivity {
                                             "Imágen: " + imgrt + "\n");
                                     tvProduct.setTextSize(16);
 
-
-
                                     // Agregar el LinearLayout al LinearLayout llProductsContainer
                                     llProductsContainer.addView(tvProduct);
                                 }
@@ -119,8 +121,7 @@ public class SearchActivity extends AppCompatActivity {
                                 // Establecer el contenido de la actividad como la vista inflada resultView
                                 setContentView(resultView);
                             } catch (JSONException e) {
-                                    Toast.makeText(SearchActivity.this, "No se encontraron resultados", Toast.LENGTH_SHORT).show();
-
+                                Toast.makeText(SearchActivity.this, "No se encontraron resultados", Toast.LENGTH_SHORT).show();
                                 e.printStackTrace();
                             }
                         }
@@ -148,7 +149,12 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        // Iniciar una nueva instancia de SearchActivity
+        Intent intent = new Intent(SearchActivity.this, SearchActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }
-
-
-
