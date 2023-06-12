@@ -32,6 +32,8 @@ import okhttp3.Response;
 public class SearchActivity extends AppCompatActivity {
 
     private EditText tbuscar;
+    private static final long TIEMPO_LIMITE_SALIDA = 2000; // 2 segundos
+    private long tiempoUltimaPulsacion = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,15 +65,11 @@ public class SearchActivity extends AppCompatActivity {
         OkHttpClient client = new OkHttpClient();
 
         // Construir el cuerpo de la solicitud con el parámetro de búsqueda
-        RequestBody requestBody = new FormBody.Builder()
-                .add("searchTerm", searchTerm)
-                .build();
+        RequestBody requestBody = new FormBody.Builder().add("searchTerm", searchTerm).build();
 
         // Construir la solicitud POST
-        Request request = new Request.Builder()
-                .url("http://192.168.1.45/RacerStore/search.php")  // Reemplaza con la URL de tu archivo PHP en el servidor
-                .post(requestBody)
-                .build();
+        Request request = new Request.Builder().url("http://192.168.1.45/RacerStore/search.php")  // Reemplaza con la URL de tu archivo PHP en el servidor
+                .post(requestBody).build();
 
         // Enviar la solicitud de forma asíncrona
         client.newCall(request).enqueue(new Callback() {
@@ -106,7 +104,9 @@ public class SearchActivity extends AppCompatActivity {
                                     String categoria = jsonObject.getString("categoria");
                                     String nombre = jsonObject.getString("nombre");
                                     String descripcion = jsonObject.getString("descripcion");
+                                    String precio = jsonObject.getString("precio");
                                     String imgrt = jsonObject.getString("imgrt");
+
 
                                     // Crear un LinearLayout horizontal para contener la imagen y los datos del producto
                                     LinearLayout productLayout = new LinearLayout(SearchActivity.this);
@@ -117,14 +117,22 @@ public class SearchActivity extends AppCompatActivity {
                                     ivProductImage.setLayoutParams(new LinearLayout.LayoutParams(500, 500)); // Ajusta el tamaño según tus necesidades
                                     // Utiliza una biblioteca de carga de imágenes como Picasso o Glide para cargar la imagen desde el enlace (imgrt)
                                     // Ejemplo con Picasso:
+
                                     Picasso.get().load(imgrt).into(ivProductImage);
 
                                     // Crear un TextView para mostrar los datos del producto
                                     TextView tvProduct = new TextView(SearchActivity.this);
-                                    tvProduct.setText("Código: " + codigo + "\n" +
-                                            "Categoría: " + categoria + "\n" +
-                                            "Nombre: " + nombre + "\n" +
-                                            "Descripción: " + descripcion + "\n");
+                                    tvProduct.setText("Código: " + codigo + "\n" + "Categoría: " + categoria + "\n" + "Nombre: " + nombre + "\n" + "Descripción: " + descripcion + "\n" + "Precio: S/" + precio + "\n");
+
+                                    // Ajustar el tamaño del texto
+                                    tvProduct.setTextSize(17); // Puedes ajustar el tamaño según tus necesidades
+
+                                    // Agregar espaciado entre la imagen y el texto
+                                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    layoutParams.setMargins(16, 16, 16, 16); // Margen izquierdo de 16 píxeles
+
+                                    tvProduct.setLayoutParams(layoutParams);
+
 
                                     // Agregar la imagen y el texto al LinearLayout horizontal
                                     productLayout.addView(ivProductImage);
@@ -132,6 +140,7 @@ public class SearchActivity extends AppCompatActivity {
 
                                     // Agregar el LinearLayout horizontal al LinearLayout llProductsContainer
                                     llProductsContainer.addView(productLayout);
+
                                 }
 
                                 // Establecer el contenido de la actividad como la vista inflada resultView
@@ -165,12 +174,35 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
     }
-
     @Override
     public void onBackPressed() {
-        // Iniciar una nueva instancia de SearchActivity
-        Intent intent = new Intent(SearchActivity.this, SearchActivity.class);
-        startActivity(intent);
-        finish();
+        long tiempoActual = System.currentTimeMillis();
+
+        if (tiempoActual - tiempoUltimaPulsacion < TIEMPO_LIMITE_SALIDA) {
+            // Si se ha pulsado dos veces consecutivas en el intervalo de tiempo establecido, cierra la aplicación
+            super.onBackPressed();
+        } else {
+            // Si es la primera pulsación o ha pasado más tiempo, reinicia el diseño de SearchActivity
+            tiempoUltimaPulsacion = tiempoActual;
+
+            // Reiniciar el diseño de la actividad
+            setContentView(R.layout.activity_search);
+
+            tbuscar = findViewById(R.id.tbuscar);
+
+            Button btnSearch = findViewById(R.id.search);
+            Toast.makeText(this, "Presiona nuevamente para salir", Toast.LENGTH_SHORT).show();
+            btnSearch.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    String searchTerm = tbuscar.getText().toString().trim();
+
+                    // Realizar la solicitud HTTP al archivo PHP
+                    searchProducts(searchTerm);
+                }
+            });
+        }
     }
 }
+
