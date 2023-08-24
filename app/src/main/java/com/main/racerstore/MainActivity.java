@@ -2,15 +2,15 @@ package com.main.racerstore;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.io.IOException;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -20,11 +20,12 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
-
+    private boolean isButtonEnabled = true;
     private EditText etUser;
     private EditText etPass;
     private Button btnLogin;
-
+    private Animation buttonAnimation;
+    String ip = Product.getGlobalip();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,15 +34,27 @@ public class MainActivity extends AppCompatActivity {
         etUser = findViewById(R.id.log);
         etPass = findViewById(R.id.pass);
         btnLogin = findViewById(R.id.login);
+        buttonAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_login);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String user = etUser.getText().toString().trim();
-                String pass = etPass.getText().toString().trim();
+                btnLogin.startAnimation(buttonAnimation);
+                if (isButtonEnabled) {
+                    isButtonEnabled = false; // Desactivar el botón temporalmente
+                    String user = etUser.getText().toString().trim();
+                    String pass = etPass.getText().toString().trim();
+                    // Realizar la solicitud HTTP al archivo PHP
+                    login(user, pass);
 
-                // Realizar la solicitud HTTP al archivo PHP
-                login(user, pass);
+                    // Restablecer el estado del botón después de un tiempo
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            isButtonEnabled = true; // Volver a habilitar el botón
+                        }
+                    }, 2000); // Especifica el tiempo en milisegundos antes de restablecer el botón
+                }
             }
         });
     }
@@ -58,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Construir la solicitud POST
         Request request = new Request.Builder()
-                .url("http://192.168.1.45/RacerStore/login.php")  // Reemplaza con la URL de tu archivo PHP en el servidor
+                .url(ip+"/RacerStore/login.php")  // Reemplaza con la URL de tu archivo PHP en el servidor
                 .post(requestBody)
                 .build();
 

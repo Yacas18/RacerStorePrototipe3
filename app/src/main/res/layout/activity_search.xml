@@ -2,18 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="70dp"
     android:theme="@style/Theme">
 
     <ImageView
+        android:id="@+id/racerLogo"
         android:layout_width="match_parent"
-        android:layout_height="109dp"
+        android:layout_height="110dp"
         android:src="@drawable/logoracer"
         android:layout_marginBottom="30dp"
         android:layout_marginTop="10dp"
-        android:contentDescription="@string/logo" />
-
+        android:contentDescription="@string/logo"
+        />
     <EditText
         android:id="@+id/tbuscar"
         android:layout_width="273dp"
@@ -26,6 +28,7 @@
         android:minHeight="48dp"
         android:theme="@style/Theme.foo"
         android:layout_marginTop="40dp"
+
         />
 
     <Button
@@ -36,6 +39,19 @@
         android:layout_marginTop="30dp"
         android:background="@color/racer"
         android:text="@string/search_prod"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textSize="40px"/>
+    <RelativeLayout
+        android:layout_height="200dp"
+        android:layout_width="280dp">
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="searchedt.json"
+            app:lottie_loop="true" />
+    </RelativeLayout>
 </LinearLayout>

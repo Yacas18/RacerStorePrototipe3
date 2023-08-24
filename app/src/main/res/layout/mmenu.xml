@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:theme="@style/Theme">
+    <RelativeLayout android:layout_height="100dp" android:layout_width="match_parent">
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="start"
+        android:src="@drawable/splash"
+        />
+
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/addP"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:elegantTextHeight="false"
+        android:src="@drawable/add"
+    />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/addp"
+        android:textColor="@color/black"
+        android:textSize="40px"
+        android:textStyle="bold|italic"
+        android:layout_marginTop="10dp"
+        />
+
+    <ImageView
+        android:id="@+id/editP"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="60dp"
+        android:textColor="@color/white"
+        android:src="@drawable/edit_edit"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edtp"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:textSize="40px"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold|italic"
+        />
+
+
+</LinearLayout>

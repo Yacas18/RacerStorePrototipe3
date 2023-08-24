@@ -12,4 +12,12 @@
     <string name="title_activity_splash">Splash_Activity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="addp">Agregar Producto</string>
+    <string name="edtp">Editar Producto</string>
+    <string name="icod">Código</string>
+    <string name="icat">Categoría</string>
+    <string name="inam">Nombre</string>
+    <string name="ides">Descripción</string>
+    <string name="iprecio">Precio</string>
+    <string name="searchp">¿Que producto deseas editar?</string>
 </resources>

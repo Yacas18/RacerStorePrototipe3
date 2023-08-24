@@ -20,19 +20,21 @@
         app:srcCompat="@drawable/splash"
         tools:layout_editor_absoluteX="55dp"
         tools:layout_editor_absoluteY="286dp" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="150dp"
+        android:layout_height="300dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="130dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="500dp"
-        android:layout_marginEnd="160dp"
-        android:layout_marginBottom="132dp"
-        tools:layout_editor_absoluteX="170dp"
-        tools:layout_editor_absoluteY="495dp" />
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="150dp"
+        app:srcCompat="@drawable/textracer"
+        tools:layout_editor_absoluteX="55dp"
+        tools:layout_editor_absoluteY="286dp"
+        />
+
 </RelativeLayout>
