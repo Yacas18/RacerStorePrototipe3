@@ -1,0 +1,14 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="400dp"
+    android:layout_height="400dp"
+    android:id="@+id/layu2"
+    >
+
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/mapaa4"/>
+
+</RelativeLayout>

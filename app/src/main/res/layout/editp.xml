@@ -1,0 +1,57 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainLayout"
+    android:orientation="vertical">
+
+    <!-- Scroll de productos -->
+    <ImageView
+        android:layout_width="74dp"
+        android:layout_height="78dp"
+        android:layout_gravity="top|end"
+        android:layout_margin="20dp"
+        android:src="@drawable/splash" />
+
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="290dp"
+        android:layout_height="78dp"
+        android:layout_gravity="top|left"
+        android:layout_margin="20dp" />
+
+    <!-- Aquí se usará el RecyclerView para mostrar los productos -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp" />
+
+    <!-- El RelativeLayout para mostrar u ocultar -->
+    <RelativeLayout
+        android:id="@+id/rela1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation1"
+            android:layout_height="400dp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="120dp"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="editsear.json" />
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_below="@+id/animation1"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:text="@string/searchp"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+</FrameLayout>
