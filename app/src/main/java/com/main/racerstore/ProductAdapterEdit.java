@@ -1,6 +1,7 @@
 package com.main.racerstore;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -11,9 +12,13 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import me.relex.photodraweeview.PhotoDraweeView;
 
 public class ProductAdapterEdit extends RecyclerView.Adapter<ProductAdapterEdit.ProductViewHolder> {
 
@@ -61,8 +66,12 @@ public class ProductAdapterEdit extends RecyclerView.Adapter<ProductAdapterEdit.
         holder.tvUbicacion.setText("Ubicación: "+ ubi);
         holder.tvPrecio.setText("Precio: S/" + product.getPrecio());
 
-        Picasso.get().load(product.getGlobalVariable()+product.getImgrt()).placeholder(R.drawable.sinimagen).into(holder.ivProductImage);
-
+        Uri link = Uri.parse(product.getImgrt());
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setUri(link)
+                .setAutoPlayAnimations(true)
+                .build();
+        holder.ivProductImage.setController(controller);
         // Agregar el OnClickListener para el producto
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +89,7 @@ public class ProductAdapterEdit extends RecyclerView.Adapter<ProductAdapterEdit.
     }
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
-        private ImageView ivProductImage;
+        private PhotoDraweeView ivProductImage;
         private TextView tvCodigo;
         private TextView tvCategoria;
         private TextView tvNombre;

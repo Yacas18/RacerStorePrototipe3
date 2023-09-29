@@ -21,15 +21,6 @@ public class Product {
         this.videoURL=videoURL;
         this.ubicacion=ubicacion;
     }
-    public Product(String codigo, String categoria, String nombre, String descripcion, String precio, String imgrt,String ubicacion) {
-        this.codigo = codigo;
-        this.categoria = categoria;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.precio = precio;
-        this.imgrt = imgrt;
-        this.ubicacion = ubicacion;
-    }
     public String getCodigo() {
         return codigo;
     }
@@ -59,11 +50,4 @@ public class Product {
     }
 
     public String getUbicacion(){return ubicacion;}
-
-    public String getGlobalVariable() {
-        return ipserser;
-    }
-    public static String getGlobalip() {
-        return ip;
-    }
 }

@@ -1,24 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="400dp"
-    android:layout_height="500dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:gravity="center">
-
-    <com.google.android.exoplayer2.ui.AspectRatioFrameLayout
-        android:layout_width="400dp"
-        android:layout_height="500dp"
-        android:layout_weight="0.65"
-         >
-
-        <com.google.android.exoplayer2.ui.PlayerView
-            android:id="@+id/playerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:resize_mode="fill"
-            app:show_timeout="5000"
-        />
-
-    </com.google.android.exoplayer2.ui.AspectRatioFrameLayout>
-
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="250dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<WebView android:id="@+id/playerView"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:foregroundGravity="center"
+     />
 </LinearLayout>
+

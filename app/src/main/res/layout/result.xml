@@ -6,13 +6,14 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="150dp"
+        android:layout_width="153dp"
         android:layout_height="100dp"
         android:layout_gravity="top|end"
         android:layout_margin="20dp">
-    <!-- Scroll de productos -->
+        <!-- Scroll de productos -->
 
         <ImageView
+
             android:layout_width="74dp"
             android:layout_height="78dp"
             android:layout_alignParentEnd="true"
@@ -22,16 +23,19 @@
             android:src="@drawable/splash" />
 
         <com.airbnb.lottie.LottieAnimationView
-            android:layout_width="114dp"
-            android:layout_height="83dp"
+            android:id="@+id/refresh"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom|start"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="1dp"
-            app:lottie_autoPlay="true"
-            app:lottie_fileName="search.json"
-            app:lottie_loop="true" />
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="59dp"
+            android:layout_marginBottom="7dp"
+            app:lottie_autoPlay="false"
+            app:lottie_fileName="refresh.json"
+            app:lottie_loop="false" />
     </RelativeLayout>
 
     <SearchView
@@ -72,5 +76,30 @@
             app:lottie_autoPlay="false"
             app:lottie_fileName="check.json"
             app:lottie_loop="false"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rela2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation1"
+            android:layout_height="400dp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="120dp"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="notfoung.json" />
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_below="@+id/animation1"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:text="@string/nf"
+            android:textSize="25dp"
+            android:textStyle="bold" />
     </RelativeLayout>
 </FrameLayout>

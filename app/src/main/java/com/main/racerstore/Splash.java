@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.Timer;
 import java.util.TimerTask;
+import com.facebook.drawee.backends.pipeline.Fresco;
 
 
 public class Splash extends AppCompatActivity {
@@ -17,6 +18,7 @@ public class Splash extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.splash);
+            Fresco.initialize(this);
             ImageView iconImageView = findViewById(R.id.imageView); // Reemplaza con el ID correcto de tu ImageView
             Animation animation = AnimationUtils.loadAnimation(this, R.anim.splash_animation);
             iconImageView.startAnimation(animation);

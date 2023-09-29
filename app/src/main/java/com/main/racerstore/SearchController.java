@@ -3,9 +3,12 @@ package com.main.racerstore;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.Animatable;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +16,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -23,7 +31,10 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import me.relex.photodraweeview.PhotoDraweeView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -32,6 +43,14 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import android.app.ActivityManager;
+import me.relex.photodraweeview.PhotoDraweeView;
+import com.github.chrisbanes.photoview.PhotoView;
+import me.relex.photodraweeview.PhotoDraweeView;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.controller.AbstractDraweeController;
+import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.drawee.controller.ControllerListener;
+import com.facebook.imagepipeline.image.ImageInfo;
 public class SearchController{
     private boolean isActionEnabled = true;
     private Context context;
@@ -41,7 +60,7 @@ public class SearchController{
     private Add add;
     private MiniMenu miniMenu;
     private ProductAdapter productAdapter;
-    String ip = Product.getGlobalip();
+    public static boolean cacheEnabled = true;
     public SearchController(SearchActivity searchActivity) {
         this.searchActivity = searchActivity;
     }
@@ -58,7 +77,7 @@ public class SearchController{
     public void searchProducts(String searchTerm) {
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new FormBody.Builder().add("searchTerm", searchTerm).build();
-        Request request = new Request.Builder().url(ip+"/RacerStore/search.php").post(requestBody).build();
+        Request request = new Request.Builder().url("http://circulinasperu.com/RacerStore/search.php").post(requestBody).build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -138,7 +157,7 @@ public class SearchController{
         String searchTerm = edit.getSearchTerm(); // Reemplaza "edit" con la instancia de la clase Edit correspondiente
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new FormBody.Builder().add("searchTerm", searchTerm).build();
-        Request request = new Request.Builder().url(ip+"/RacerStore/search.php").post(requestBody).build();
+        Request request = new Request.Builder().url("http://circulinasperu.com/RacerStore/search.php").post(requestBody).build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -180,7 +199,7 @@ public class SearchController{
         });
     }
 
-    public void enviarDatosAlServidorAdd(Context context, String URL,String codigo, String categoria, String nombre, String descripcion, String precio,String ubicacion) {
+    public void enviarDatosAlServidorAdd(Context context, String URL,String codigo, String categoria, String nombre, String descripcion, String precio,String videoURL,String ubicacion) {
         // Crea una instancia de OkHttpClient (o la biblioteca que estés utilizando)
         OkHttpClient client = new OkHttpClient();
 
@@ -191,6 +210,7 @@ public class SearchController{
                 .add("nombre", nombre)
                 .add("descripcion", descripcion)
                 .add("precio", precio)
+                .add("videoURL", videoURL)
                 .add("ubicacion",ubicacion);
         // Crea una solicitud HTTP POST con la URL del archivo PHP y los parámetros
         Request request = new Request.Builder()
@@ -228,7 +248,7 @@ public class SearchController{
             }
         });
     }
-    public void enviarDatosAlServidorEdit(Context context, String URL, String idcodigo,String codigo, String categoria, String nombre, String descripcion, String precio,String ubicacion) {
+    public void enviarDatosAlServidorEdit(Context context, String URL, String idcodigo,String codigo, String categoria, String nombre, String descripcion, String precio, String videoURL, String ubicacion) {
         // Crea una instancia de OkHttpClient (o la biblioteca que estés utilizando)
         OkHttpClient client = new OkHttpClient();
 
@@ -240,6 +260,7 @@ public class SearchController{
                 .add("nombre", nombre)
                 .add("descripcion", descripcion)
                 .add("precio", precio)
+                .add("videoURL",videoURL)
                 .add("ubicacion", ubicacion);
         // Crea una solicitud HTTP POST con la URL del archivo PHP y los parámetros
         Request request = new Request.Builder()
@@ -288,7 +309,7 @@ public class SearchController{
 
         // Crea una solicitud HTTP POST con la URL del archivo PHP y los parámetros
         Request request = new Request.Builder()
-                .url(ip+"/RacerStore/eliminar_producto.php")
+                .url("http://circulinasperu.com/RacerStore/eliminar_producto.php")
                 .post(formBuilder.build())
                 .build();
 
@@ -322,7 +343,9 @@ public class SearchController{
             }
         });
     }
-    public void showVideoDialog(String videoURL, Context context) {
+
+    //METODO DE REPRODUCCION DE VIDEO LOCAL, NO VIABLE
+    /*public void showVideoDialog(String videoURL, Context context) {
         // Crear el AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -361,16 +384,78 @@ public class SearchController{
         // Mostrar el AlertDialog
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-    }
-    public void mostrarLocate(TextView text, String nombre, TextView text2, String locate,String uri, ImageView imageloc){
+    }*/
+    public void mostrarLocate(TextView text, String nombre, TextView text2, String locate,String uri, PhotoDraweeView imageloc){
         // Obtener la referencia a la ImageView del popup
         text.setText(nombre);
         text2.setText(locate);
 
         Picasso.get().load(uri).into(imageloc);
+
+
+        Uri link = Uri.parse(uri);
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setUri(link)
+                .setAutoPlayAnimations(true)
+                .build();
+        imageloc.setController(controller);
     }
-    public void imagepopup(String uri,ImageView imgrr){
-        Picasso.get().load(uri).into(imgrr);
+    public void imagepopup(String uri, PhotoDraweeView imge){
+        ControllerListener<ImageInfo> controllerListener = new BaseControllerListener<ImageInfo>() {
+            @Override
+            public void onFinalImageSet(
+                    String id,
+                    ImageInfo imageInfo,
+                    Animatable animatable
+            ) {
+                // Permite el zoom cuando la imagen se establece correctamente
+                imge.update(imageInfo.getWidth(), imageInfo.getHeight());
+            }
+        };
+        Uri link = Uri.parse(uri);
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setUri(link)
+                .setControllerListener(controllerListener)
+                .setAutoPlayAnimations(true)
+                .build();
+        imge.setController(controller);
+    }
+    public static String extractVideoId(String youtubeUrl,Context context) {
+        if (youtubeUrl == null || youtubeUrl.isEmpty()) {
+            Toast.makeText(context,"No se adjunto URL",Toast.LENGTH_SHORT).show();
+            return ""; // Devolver una cadena vacía si la entrada es nula o vacía
+        }
+        String videoId = null;
+        String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(youtubeUrl);
+
+        if (matcher.find()) {
+            videoId = matcher.group();
+        }else{
+            Toast.makeText(context,"Link invalido",Toast.LENGTH_SHORT).show();
+        }
+        return videoId != null? videoId : "";
+    }
+    public static String isYouTubeUrl(String url,Context context) {
+        if (url == null || url.isEmpty()) {
+            Toast.makeText(context, "No se adjunto URL", Toast.LENGTH_SHORT).show();
+            return "";
+        }
+        String videoId = null;
+        // Patrón para detectar enlaces de YouTube
+        String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(url);
+        // Comprobar si la URL coincide con el patrón de YouTube
+        if (matcher.find()) {
+            videoId = matcher.group();
+            Toast.makeText(context, "Se guardo el link", Toast.LENGTH_SHORT).show();
+            Log.i("IDVIDEO",videoId);
+        }else{
+            Toast.makeText(context,"Link invalido, no se guardo enlace",Toast.LENGTH_SHORT).show();
+        }
+        return videoId != null ? url : "";
     }
 
 }

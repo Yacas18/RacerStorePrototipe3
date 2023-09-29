@@ -4,11 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -52,7 +54,7 @@ public class Add extends AppCompatActivity {
     private EditText precioEditText;
     ImageView iv;
     TextView et;
-    String ip = Product.getGlobalip();
+    ImageView cyt;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     Bitmap bitmap;
     int PICK_IMAGE_REQUEST = 1;
@@ -63,10 +65,12 @@ public class Add extends AppCompatActivity {
     private LottieAnimationView animationView;
     private Uri imageUri;
     private Spinner spinner;
-    String [] option = {"Ubicación del producto","ANAQUEL 1","ANAQUEL 2","ANAQUEL 3","ANAQUEL 4",
+    public String video = "";
+    String option[] = {"Ubicación del producto","ANAQUEL 1","ANAQUEL 2","ANAQUEL 3","ANAQUEL 4",
             "ANAQUEL 5", "ANAQUEL 6", "ANAQUEL 7","ANAQUEL 8","ANAQUEL 9","ANAQUEL 10","ANAQUEL 11","ANAQUEL 12"
     ,"ANAQUEL 13","ANAQUEL 14","ANAQUEL 15","COCINA","TRUPAN 1","TRUPAN 2","TRUPAN 3"
             ,"TRUPAN 4","TRUPAN 5","ZONA OSCURA", "VITRINA 1","VITRINA 2","VITRINA 3","VITRINA 4", "VITRINA 5"};
+    public String opcs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +85,7 @@ public class Add extends AppCompatActivity {
         nombreEditText = findViewById(R.id.inombre);
         descripcionEditText = findViewById(R.id.idescripcion);
         precioEditText = findViewById(R.id.iprecio);
+        cyt = findViewById(R.id.clipyt);
         ViewSwitcher viewSwitcher = findViewById(R.id.viewSwitcher);
         Button ingresar = findViewById(R.id.intodate);
         spinner = findViewById(R.id.locate);
@@ -122,6 +127,27 @@ public class Add extends AppCompatActivity {
                 showImageSourceMenu();
             }
         });
+
+        cyt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog pp = new Dialog(Add.this);
+                pp.setContentView(R.layout.inpurl);
+                EditText link = pp.findViewById(R.id.youtube);
+                Button savm =pp.findViewById(R.id.save);
+                pp.show();
+                savm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String linkdevideo = link.getText().toString();
+                        String truth = searchController.isYouTubeUrl(linkdevideo,Add.this);
+                        video = truth;
+                        Log.i("LINK",video);
+                        pp.dismiss();
+                    }
+                });
+            }
+        });
     }
     private void showImageSourceMenu() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -148,10 +174,10 @@ public class Add extends AppCompatActivity {
         String nombre = nombreEditText.getText().toString();
         String descripcion = descripcionEditText.getText().toString();
         String precio = precioEditText.getText().toString();
-        String ubicacion = spinner.getSelectedItem().toString();
+        String ubicacion = opcion();
         // Llama al método para enviar los datos al servidor
-        searchController.enviarDatosAlServidorAdd(Add.this,(ip+"/RacerStore/insert.php"), codigo,categoria, nombre, descripcion, precio,ubicacion);
-
+        searchController.enviarDatosAlServidorAdd(Add.this,("http://circulinasperu.com/RacerStore/insert.php"), codigo,categoria, nombre, descripcion, precio, video,ubicacion);
+        Log.i("VARIABLE",video);
     }
 
     public String getStringImagen(Bitmap bmp) {
@@ -164,7 +190,7 @@ public class Add extends AppCompatActivity {
 
     public void uploadImage() {
         final ProgressDialog loading = ProgressDialog.show(this, "Subiendo...", "Espere por favor");
-        StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST, (ip+"/RacerStore/uploaddg.php"),
+        StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST, ("http://circulinasperu.com/RacerStore/uploaddg.php"),
                 new com.android.volley.Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -266,5 +292,14 @@ public class Add extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+    public String opcion(){
+        opcs = "Ubicación del producto";
+        if(opcs == (spinner.getSelectedItem().toString())){
+            opcs=" ";
+        }else{
+            opcs=spinner.getSelectedItem().toString();
+        }
+        return opcs;
     }
 }

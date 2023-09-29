@@ -12,6 +12,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Layout;
 import android.text.Spannable;
@@ -33,9 +34,12 @@ import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -47,6 +51,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.relex.photodraweeview.PhotoDraweeView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -63,8 +68,8 @@ public class Edit extends AppCompatActivity implements ProductAdapterEdit.OnProd
     private static final String TAG = "Edit";
     private ProductAdapterEdit productAdapter;
     private List<Product> productList = new ArrayList<>();
-    String ip = Product.getGlobalip();
     private String cod = "";
+    private String linkdeyutu = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,8 +122,9 @@ public class Edit extends AppCompatActivity implements ProductAdapterEdit.OnProd
                 String descripcion = jsonObject.getString("descripcion");
                 String precio = jsonObject.getString("precio");
                 String imgrt = jsonObject.getString("imgrt");
+                String videoURL = jsonObject.getString("videoURL");
                 String ubicacion = jsonObject.getString("ubicacion");
-                Product product = new Product(codigo, categoria, nombre, descripcion, precio, imgrt,ubicacion);
+                Product product = new Product(codigo, categoria, nombre, descripcion, precio, imgrt, videoURL,ubicacion);
                 productList.add(product);
                 cod = codigo;
             }
@@ -133,7 +139,6 @@ public class Edit extends AppCompatActivity implements ProductAdapterEdit.OnProd
     @Override
     public void onProductClick(Product product) {
         // Crear un Dialog personalizado
-        String ubica = product.getCodigo();
         Dialog popupDialog = new Dialog(this);
         popupDialog.setContentView(R.layout.popud_addp);
         String [] option = {product.getUbicacion(),"ANAQUEL 1","ANAQUEL 2","ANAQUEL 3","ANAQUEL 4",
@@ -153,7 +158,8 @@ public class Edit extends AppCompatActivity implements ProductAdapterEdit.OnProd
         EditText precioEditText = popupDialog.findViewById(R.id.iprecio);
         TextView idcodigo = popupDialog.findViewById(R.id.codigoact);
         Button deletep = popupDialog.findViewById(R.id.delete);
-        ImageView imageView = popupDialog.findViewById(R.id.imagelog);
+        Button videoo = popupDialog.findViewById(R.id.lik);
+        PhotoDraweeView imageView = popupDialog.findViewById(R.id.imagelog);
         Spinner ubi = popupDialog.findViewById(R.id.spinn);
         // Establecer los datos del producto en los elementos correspondientes de la ventana emergente
         idcodigo.setText(product.getCodigo());
@@ -164,8 +170,32 @@ public class Edit extends AppCompatActivity implements ProductAdapterEdit.OnProd
         precioEditText.setText(product.getPrecio());
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,option);
         ubi.setAdapter(adapter);
-        Picasso.get().load(product.getGlobalVariable()+product.getImgrt()).into(imageView);
+        Uri link = Uri.parse(product.getImgrt());
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setUri(link)
+                .setAutoPlayAnimations(true)
+                .build();
+        imageView.setController(controller);
 
+        videoo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog editl = new Dialog(Edit.this);
+                editl.setContentView(R.layout.inpurledt);
+                EditText youtubeedt = editl.findViewById(R.id.youtubedt);
+                Button saveedt = editl.findViewById(R.id.saveedt);
+                youtubeedt.setText(product.getVideoURL());
+                saveedt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        linkdeyutu = youtubeedt.getText().toString();
+                        Toast.makeText(Edit.this, "Se registro link", Toast.LENGTH_SHORT).show();
+                        editl.dismiss();
+                    }
+                });
+                editl.show();
+            }
+        });
         EditB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,6 +206,7 @@ public class Edit extends AppCompatActivity implements ProductAdapterEdit.OnProd
                 String nombre = nombreEditText.getText().toString();
                 String descripcion = descripcionEditText.getText().toString();
                 String precio = precioEditText.getText().toString();
+                String videoURL = linkdeyutu;
                 String ubicacion = ubi.getSelectedItem().toString();
                 AlertDialog.Builder builder = new AlertDialog.Builder(Edit.this);
                 builder.setTitle("Confirmación");
@@ -184,7 +215,7 @@ public class Edit extends AppCompatActivity implements ProductAdapterEdit.OnProd
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Acciones a realizar si se confirma (Sí)
-                        searchController.enviarDatosAlServidorEdit(Edit.this,(ip+"/RacerStore/editp.php"),id, codigo,categoria, nombre, descripcion, precio, ubicacion);
+                        searchController.enviarDatosAlServidorEdit(Edit.this,("http://circulinasperu.com/RacerStore/editp.php"),id, codigo,categoria, nombre, descripcion, precio, videoURL, ubicacion);
                         viewSwitcher.showNext();
                         animationView.addAnimatorListener(new Animator.AnimatorListener(){
                             @Override

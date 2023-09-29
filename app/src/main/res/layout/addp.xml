@@ -96,7 +96,6 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="55dp"
                 android:layout_marginEnd="55dp"
-
                 />
             <RelativeLayout android:layout_height="wrap_content"  android:layout_width="match_parent">
 
@@ -125,6 +124,17 @@
                     app:lottie_fileName="gallery.json"
                     app:lottie_loop="true" />
 
+                <ImageView
+                    android:id="@+id/clipyt"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="243dp"
+                    android:layout_marginTop="56dp"
+                    android:layout_marginEnd="99dp"
+                    android:src="@drawable/clip" />
 
             </RelativeLayout>
 

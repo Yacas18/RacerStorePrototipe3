@@ -1,43 +1,27 @@
 package com.main.racerstore;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
+import android.animation.Animator;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.TextUtils;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.StyleSpan;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.github.chrisbanes.photoview.PhotoView;
-import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +29,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.squareup.picasso.Picasso;
 
 public class Result extends AppCompatActivity {
     // Variables para el reproductor de video
@@ -62,6 +45,7 @@ public class Result extends AppCompatActivity {
     private String searchTerm;
     private static final String TAG = "Result";
     private Context context;
+    public int refreshing=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +54,7 @@ public class Result extends AppCompatActivity {
         searchController = new SearchController(Result.this);
         txtBuscar = findViewById(R.id.txtbuscar);
         Intent intent = getIntent();
+        LottieAnimationView refresh = findViewById(R.id.refresh);
         if (intent != null) {
             searchTerm = intent.getStringExtra("searchTerm");
             txtBuscar.setQuery(searchTerm, false);
@@ -112,6 +97,37 @@ public class Result extends AppCompatActivity {
                 popupDialog.show();
             }
         });
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh.playAnimation();
+                refresh.addAnimatorListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(@NonNull Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(@NonNull Animator animation) {
+                        Fresco.getImagePipeline().clearCaches();
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                        Toast.makeText(Result.this, "Se actualizó las imagenes", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onAnimationCancel(@NonNull Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(@NonNull Animator animation) {
+
+                    }
+                });
+            }
+        });
     }
 
     private void searchProducts(String searchTerm) {
@@ -119,6 +135,8 @@ public class Result extends AppCompatActivity {
     }
 
     public void showSearchResults(JSONArray jsonArray) {
+        RelativeLayout anim2 = findViewById(R.id.rela2);
+        anim2.setVisibility(View.GONE);
         try {
             List<Product> productList = new ArrayList<>();
 

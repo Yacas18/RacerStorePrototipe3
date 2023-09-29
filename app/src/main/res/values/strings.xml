@@ -2,9 +2,9 @@
     <string name="app_name">RacerStore</string>
     <string name="log_user">Inicio de sesión</string>
     <string name="name">Nombre de Usuario</string>
-    <string name="place_nam">Ingrese su nombre de Usuario</string>
+    <string name="place_nam">Ingrese nombre de Usuario</string>
     <string name="pass">Contraseña</string>
-    <string name="place_pass">Ingresa tu contraseña</string>
+    <string name="place_pass">Ingrese Contraseña</string>
     <string name="new_log">Iniciar Sesión</string>
     <string name="logo">Contenido del logo</string>
     <string name="place_nam2">Ingrese código o descripción</string>
@@ -19,5 +19,6 @@
     <string name="inam">Nombre</string>
     <string name="ides">Descripción</string>
     <string name="iprecio">Precio</string>
+    <string name="nf">Producto no encontrado</string>
     <string name="searchp">¿Que producto deseas editar?</string>
 </resources>

@@ -3,37 +3,49 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import com.airbnb.lottie.LottieAnimationView;
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
+import me.relex.photodraweeview.PhotoDraweeView;
+
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
+    public int refreshingh;
     private List<Product> productList;
     private Context context;
     private SearchController searchController;
@@ -53,11 +65,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         // Obtener los datos del producto en la posición actual
+        Result result = new Result();
+        refreshingh = result.refreshing;
         String actpa="";
+        holder.botonlocate.setVisibility(View.GONE);
         Product producto = productList.get(position);
         if(!TextUtils.isEmpty(producto.getUbicacion())){
             actpa = producto.getUbicacion();
             holder.tvUbicacion.setTextColor(ContextCompat.getColor(context,R.color.black));
+            holder.botonlocate.setVisibility(View.VISIBLE);
         }else {
             actpa = "Ubicacion no disponible";
         }
@@ -68,21 +84,36 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.tvDescripcion.setText("Descripción: " + producto.getDescripcion());
         holder.tvPrecio.setText("Precio: S/" + producto.getPrecio());
         holder.tvUbicacion.setText("Ubicación: " + actpa);
-        // Cargar la imagen con Picasso
-        Picasso.get().load(producto.getGlobalVariable()+producto.getImgrt()).placeholder(R.drawable.imagen).into(holder.ivProductImage);
+
+        Uri uri = Uri.parse(producto.getImgrt());
+        holder.ivProductImage.setImageURI(uri);
+        Log.i("URL", producto.getImgrt());
+        if((producto.getVideoURL()).equals("")){
+            holder.playingvid.setVisibility(View.GONE);
+        }
+
+        if((holder.ivProductImage.equals(R.drawable.sinimagen))){
+            holder.ivProductImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(result, "Imagen no disponible", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
         // Asignar el OnClickListener para reproducir el video
         holder.ivProductImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //CLICK EN IMAGEN METO((getImgrt()) == 1 || (getImgrt()) == null || (getImgrt()).equals(""))
-                if(producto.getImgrt()==("1")){
-                    Toast.makeText(context, "Producto sin imagen", Toast.LENGTH_SHORT).show();
-                }else{
+                if(!TextUtils.isEmpty(producto.getImgrt())){
                     Dialog popupDialog = new Dialog(context);
                     popupDialog.setContentView(R.layout.item_image);
-                    ImageView imagdd = popupDialog.findViewById(R.id.imageView);
-                    searchController.imagepopup((producto.getGlobalVariable()+producto.getImgrt()), imagdd);
+                    PhotoDraweeView imagdd = popupDialog.findViewById(R.id.imageView);
+                    searchController.imagepopup(producto.getImgrt(), imagdd);
                     popupDialog.show();
+
+                }else{
+                    Toast.makeText(context, "Producto sin imagen", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -96,13 +127,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     popupDialog.setContentView(R.layout.popup_image);
                     RelativeLayout popup = popupDialog.findViewById(R.id.layu);
                     TextView textnamel = popupDialog.findViewById(R.id.productolocationm);
-                    ImageView imagennn = popupDialog.findViewById(R.id.locateimagep);
+                    PhotoDraweeView imagennn = popupDialog.findViewById(R.id.locateimagep);
                     TextView textname2 = popupDialog.findViewById(R.id.locate);
-                    LottieAnimationView loti = popupDialog.findViewById(R.id.imageView);
                     PhotoView imagenmap = popupDialog.findViewById(R.id.ivImage);
-                    searchController.mostrarLocate(textnamel,producto.getNombre(),textname2,producto.getUbicacion(),(producto.getGlobalVariable()+producto.getImgrt()),imagennn);
-
-                        float zoomLevel;
+                    searchController.mostrarLocate(textnamel,producto.getNombre(),textname2,producto.getUbicacion(),(producto.getImgrt()),imagennn);
 
                         switch (producto.getUbicacion()) {
                             case "ANAQUEL 1":
@@ -172,7 +200,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                                 imagenmap.setScale(3, 400,700, true); // Con animación y centrado en (x, y)
                                 break;
                             case "VITRINA 1":
-                                imagenmap.setScale(3, 700,500, true); // Con animación y centrado en (x, y)
+                                imagenmap.setScale(3, 700,600, true); // Con animación y centrado en (x, y)
                                 break;
                             case "VITRINA 2":
                                 imagenmap.setScale(3, 100,700, true); // Con animación y centrado en (x, y)
@@ -199,14 +227,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     holder.playingvid.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // Obtener el enlace del video desde el objeto Product
-            String videoURL = producto.getVideoURL();
-            if (!TextUtils.isEmpty(videoURL)) {
-                // Mostrar el reproductor de video utilizando el SearchController
-                searchController.showVideoDialog(videoURL, context);
-            } else {
-                Toast.makeText(context, "Video no disponible", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(context,"Cargando video",Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View dialogView = inflater.inflate(R.layout.player_video, null);
+            builder.setView(dialogView);
+
+            WebView webView = dialogView.findViewById(R.id.playerView);
+            String codvid = searchController.extractVideoId(producto.getVideoURL(),context);
+            String video = "<iframe width=\"350sp\" height=\"250sp\" src=\"https://www.youtube.com/embed/"+codvid+"?autoplay=1&controls=0&showinfo=0&rel=0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>";
+            webView.loadData(video,"text/html","utf-8");
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.setWebChromeClient(new WebChromeClient());
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
         }
     });
     }
@@ -223,10 +257,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         TextView tvDescripcion;
         TextView tvPrecio;
         TextView tvUbicacion;
-        ImageView ivProductImage;
+        SimpleDraweeView ivProductImage;
         Button botonlocate;
         Button playingvid;
-        ImageView imagdd;
         public ProductViewHolder(View itemView) {
             super(itemView);
             // Vincular las vistas con los elementos del layout
@@ -238,7 +271,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             ivProductImage = itemView.findViewById(R.id.ivProductImage);
             botonlocate = itemView.findViewById(R.id.locate);
             playingvid = itemView.findViewById(R.id.playingvid);
-            imagdd = itemView.findViewById(R.id.imageView);
             tvUbicacion = itemView.findViewById(R.id.tvUbicacion);
         }
     }

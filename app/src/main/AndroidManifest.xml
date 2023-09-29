@@ -58,9 +58,7 @@
         <activity
             android:name="com.main.racerstore.Result"
             android:exported="true" />
-        <activity
-            android:name="ipserver"
-            />
+
     </application>
 
 </manifest>
