@@ -59,4 +59,5 @@ dependencies {
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'com.facebook.fresco:fresco:2.6.0'
     implementation 'me.relex:photodraweeview:2.1.0'
+    implementation 'com.google.android.material:material:1.9.0'
 }

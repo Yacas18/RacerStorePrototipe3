@@ -1,78 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="70dp"
-    android:theme="@style/Theme"
-    android:background="@drawable/backff"
-    >
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/round"
-        android:src="@drawable/rr"
-        android:textAlignment="center"
-        android:textSize="24sp" />
-
-    <ImageView
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="109dp"
-        android:src="@drawable/logoracer"
-        android:layout_marginBottom="30dp"
-        android:contentDescription="@string/logo"
-        android:background="@drawable/round"
-        />
+        app:layoutDescription="@xml/motion_scene_splash"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
-        android:layout_width="273dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/round">
-        <EditText
-            android:id="@+id/log"
-            android:layout_width="273dp"
+        <ImageView
+            android:id="@+id/imgView_logo"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="80dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/df"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imgView_cloudLeft"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/seg"
+            android:translationX="-20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/lightGrey" />
+
+        <ImageView
+            android:id="@+id/imgView_cloudRight"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="120dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/luzl"
+            android:translationX="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/lightGrey" />
+
+        <LinearLayout
+            android:alpha="1"
+            android:id="@+id/linlay_inputs"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints="username"
-            android:elegantTextHeight="false"
-            android:hint="@string/place_nam"
-            android:inputType="text"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
-            android:theme="@style/Theme.foo" />
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginRight="30dp"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgView_cloudRight">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Welcome Back"
+                android:src="@drawable/logoracer"
+                android:textSize="20sp" />
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout2"
-        android:layout_width="273dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/round">
-    <EditText
-        android:id="@+id/pass"
-        android:layout_width="273dp"
-        android:layout_height="wrap_content"
-        android:autofillHints="password"
-        android:hint="@string/place_pass"
-        android:inputType="textPassword"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:theme="@style/Theme.foo" />
-    </com.google.android.material.textfield.TextInputLayout>
-    <Button
-        android:id="@+id/login"
-        android:layout_width="273dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/button"
-        android:text="@string/new_log"
-        android:textColor="@color/white"
-        />
+            <EditText
+                android:id="@+id/log"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:drawableStart="@drawable/ic_basemail"
+                android:drawableLeft="@drawable/ic_basemail"
+                android:drawablePadding="16dp"
+                android:hint="@string/name"
+                android:padding="16dp"
+                android:textSize="14sp" />
 
-</LinearLayout>
+            <EditText
+                android:id="@+id/pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawableStart="@drawable/ic_base"
+                android:drawableLeft="@drawable/ic_base"
+                android:drawablePadding="16dp"
+                android:hint="@string/pass"
+                android:inputType="textPassword"
+                android:padding="16dp"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/button"
+                android:text="@string/log_user"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

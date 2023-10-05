@@ -11,4 +11,9 @@
     <style name="LargeText">
         <item name="android:textSize">30sp</item>
     </style>
+    <style name="ErrorText">
+        <item name="android:textColor">@color/racer</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

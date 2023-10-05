@@ -1,11 +1,14 @@
 package com.main.racerstore;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -14,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
@@ -33,11 +37,12 @@ public class MainActivity extends AppCompatActivity {
     private Button btnLogin;
     private Animation buttonAnimation;
     public boolean valid = true;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.activity_splash_login);
+        Fresco.initialize(this);
         etUser = findViewById(R.id.log);
         etPass = findViewById(R.id.pass);
         btnLogin = findViewById(R.id.login);
@@ -47,16 +52,56 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                etUser.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        // No necesitas implementar esto.
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        // Aquí, cuando se cambia el texto en el EditText, verificamos si el texto es válido.
+                        if (!TextUtils.isEmpty(charSequence.toString().trim())) {
+                            // Si el texto no está vacío, eliminamos el mensaje de error.
+                            textInputLayout.setError(null);
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        // No necesitas implementar esto.
+                    }
+                });
+                etPass.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        // No necesitas implementar esto.
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        // Aquí, cuando se cambia el texto en el EditText, verificamos si el texto es válido.
+                        if (!TextUtils.isEmpty(charSequence.toString().trim())) {
+                            // Si el texto no está vacío, eliminamos el mensaje de error.
+                            textInputLayout2.setError(null);
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        // No necesitas implementar esto.
+                    }
+                });
+                textInputLayout.setErrorTextAppearance(R.style.ErrorText);
+                textInputLayout2.setErrorTextAppearance(R.style.ErrorText);
                 if (TextUtils.isEmpty(etUser.getText().toString().trim())) {
-                    textInputLayout.setError("El nombre de usuario es obligatorio");
-                    textInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED)); // Cambiar color a rojo
+                    textInputLayout.setError("Introduzca su usuario");
                     valid=false; // Detener el proceso de inicio de sesión
                 } else {
                     textInputLayout.setError(null); // Limpiar el mensaje de error
                 }
                 if (TextUtils.isEmpty(etPass.getText().toString().trim())) {
-                    textInputLayout2.setError("El nombre de usuario es obligatorio");
-                    textInputLayout2.setErrorTextColor(ColorStateList.valueOf(Color.RED)); // Cambiar color a rojo
+                    textInputLayout2.setError("Contraseña incorrecta o nula");
                     valid=false; // Detener el proceso de inicio de sesión
                 } else {
                     textInputLayout2.setError(null); // Limpiar el mensaje de error

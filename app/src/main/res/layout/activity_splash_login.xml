@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,7 +14,6 @@
         android:layout_marginTop="80dp"
         android:scaleType="centerInside"
         android:src="@drawable/df"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,7 +25,8 @@
         android:layout_marginTop="16dp"
         android:scaleType="centerInside"
         android:src="@drawable/seg"
-        app:layout_constraintEnd_toStartOf="parent"
+        android:translationX="-20dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/lightGrey" />
 
@@ -37,16 +37,17 @@
         android:layout_marginTop="120dp"
         android:scaleType="centerInside"
         android:src="@drawable/luzl"
-        app:layout_constraintStart_toEndOf="parent"
+        android:translationX="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/lightGrey" />
 
     <LinearLayout
-        android:alpha="0"
         android:id="@+id/linlay_inputs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
+        android:alpha="1"
         android:layout_marginLeft="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
@@ -56,32 +57,43 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgView_cloudRight">
-
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            >
+        <EditText
+            android:id="@+id/log"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_basemail"
             android:drawableLeft="@drawable/ic_basemail"
             android:drawablePadding="16dp"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
+            android:hint="@string/name"
             android:padding="16dp"
             android:textSize="14sp" />
-
-        <EditText
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            >
+        <EditText
+            android:id="@+id/pass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_base"
             android:drawableLeft="@drawable/ic_base"
             android:drawablePadding="16dp"
-            android:hint="Password"
+            android:hint="@string/pass"
             android:inputType="textPassword"
             android:padding="16dp"
             android:textSize="14sp" />
-
+        </com.google.android.material.textfield.TextInputLayout>
         <Button
+            android:id="@+id/login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -90,5 +102,4 @@
             android:textColor="@color/white" />
 
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>

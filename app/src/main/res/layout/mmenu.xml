@@ -11,7 +11,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="start"
-        android:src="@drawable/splash"
+        android:src="@drawable/df"
         />
 
     </RelativeLayout>
