@@ -5,8 +5,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
@@ -80,7 +82,14 @@ public class Result extends AppCompatActivity {
         // Inicializar variables del reproductor de video
         playerView = new PlayerView(this);
         mainLayout = findViewById(R.id.mainLayout); // Cambia el ID al ID del layout principal en tu clase
-
+        mainLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txtBuscar.clearFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(txtBuscar.getWindowToken(), 0);
+            }
+        });
         btncroquis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,6 +103,9 @@ public class Result extends AppCompatActivity {
                 popup.setScaleY(0);
                 popup.animate().scaleX(1).scaleY(1).setDuration(300).start();
                 //Mostrar el popup dialog del mapa
+                txtBuscar.clearFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(txtBuscar.getWindowToken(), 0);
                 popupDialog.show();
             }
         });
@@ -101,31 +113,44 @@ public class Result extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 refresh.playAnimation();
-                refresh.addAnimatorListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(@NonNull Animator animation) {
+                if (isButtonEnabled) {
+                    isButtonEnabled = false; // Desactivar el botón temporalmente
 
-                    }
+                    refresh.addAnimatorListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(@NonNull Animator animation) {
 
-                    @Override
-                    public void onAnimationEnd(@NonNull Animator animation) {
-                        Fresco.getImagePipeline().clearCaches();
-                        Intent intent = getIntent();
-                        finish();
-                        startActivity(intent);
-                        Toast.makeText(Result.this, "Se actualizó las imagenes", Toast.LENGTH_SHORT).show();
-                    }
+                        }
 
-                    @Override
-                    public void onAnimationCancel(@NonNull Animator animation) {
+                        @Override
+                        public void onAnimationEnd(@NonNull Animator animation) {
+                            Fresco.getImagePipeline().clearCaches();
+                            Intent intent = getIntent();
+                            finish();
+                            startActivity(intent);
+                            Toast.makeText(Result.this, "Se actualizó las imagenes", Toast.LENGTH_SHORT).show();
+                        }
 
-                    }
+                        @Override
+                        public void onAnimationCancel(@NonNull Animator animation) {
 
-                    @Override
-                    public void onAnimationRepeat(@NonNull Animator animation) {
+                        }
 
-                    }
-                });
+                        @Override
+                        public void onAnimationRepeat(@NonNull Animator animation) {
+
+                        }
+                    });
+
+
+                    // Restablecer el estado del botón después de un tiempo
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            isButtonEnabled = true; // Volver a habilitar el botón
+                        }
+                    }, 2000); // Especifica el tiempo en milisegundos antes de restablecer el botón
+                }
             }
         });
     }
@@ -164,25 +189,6 @@ public class Result extends AppCompatActivity {
             e.printStackTrace();
         }
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        // Verificar si el reproductor de video está activo
-        if (isPlaying) {
-            // Detener la reproducción del video
-            player.stop();
-            player.release();
-            isPlaying = false;
-
-            // Eliminar el reproductor de video del diseño principal
-            mainLayout.removeView(playerView);
-
-            // Volver a cargar y mostrar los resultados del layout principal
-            searchProducts(searchTerm);
-        } else {
-            super.onBackPressed();
-        }
     }
 
     @Override

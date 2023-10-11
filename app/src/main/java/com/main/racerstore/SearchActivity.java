@@ -3,6 +3,7 @@ package com.main.racerstore;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -26,7 +27,7 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         tbuscar = findViewById(R.id.tbuscar);
-        Button btnSearch = findViewById(R.id.search);
+        ImageView btnSearch = findViewById(R.id.search);
         ImageView racerLogo = findViewById(R.id.racerLogo);
         searchController = new SearchController(this);
         buttonAnimation = AnimationUtils.loadAnimation(SearchActivity.this, R.anim.anim_login);
@@ -63,10 +64,17 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void performSearch() {
-        String searchTerm = tbuscar.getText().toString().trim();
-        Intent intent = new Intent(SearchActivity.this, Result.class);
-        intent.putExtra("searchTerm", searchTerm);
-        startActivity(intent);
+        if(TextUtils.isEmpty(tbuscar.getText().toString().trim())){
+            String searchTerm = "ACC";
+            Intent intent = new Intent(SearchActivity.this, Result.class);
+            intent.putExtra("searchTerm", searchTerm);
+            startActivity(intent);
+        }else {
+            String searchTerm = tbuscar.getText().toString().trim();
+            Intent intent = new Intent(SearchActivity.this, Result.class);
+            intent.putExtra("searchTerm", searchTerm);
+            startActivity(intent);
+        }
     }
 
 
