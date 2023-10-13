@@ -30,7 +30,7 @@
             android:layout_marginEnd="31dp"
             android:layout_marginBottom="18dp"
             android:contentDescription="@string/logo"
-            android:src="@drawable/logoracer2" />
+            android:src="@drawable/logoracer" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animation2"
@@ -83,8 +83,9 @@
         tools:ignore="MissingConstraints" />
 
     <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
         android:layout_width="378dp"
-        android:layout_height="97dp"
+        android:layout_height="80dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/rounded_border2"
         android:scrollbars="none"
@@ -104,38 +105,122 @@
 
             <ImageView
                 android:id="@+id/btn1"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:padding="5dp"
-                android:src="@drawable/luzl" />
+                android:src="@drawable/acces" />
 
             <ImageView
                 android:id="@+id/btn2"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:padding="5dp"
-                android:src="@drawable/luzl" />
+                android:src="@drawable/emble"
+                />
 
             <ImageView
                 android:id="@+id/btn3"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:padding="5dp"
-                android:src="@drawable/luzl" />
+                android:src="@drawable/leds" />
 
             <ImageView
                 android:id="@+id/btn4"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:padding="5dp"
+                android:src="@drawable/circu" />
+
+            <ImageView
+                android:id="@+id/btn5"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:padding="5dp"
+                android:src="@drawable/elec" />
+
+            <ImageView
+                android:id="@+id/btn6"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:padding="5dp"
+                android:src="@drawable/grap" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView2"
+        android:layout_width="378dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/rounded_border2"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintHorizontal_bias="0.484"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.561"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:id="@+id/ln1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView3"
+        android:layout_width="378dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/rounded_border2"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.896"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/btnnn1"
+                android:background="@drawable/rounded_border2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
@@ -143,9 +228,43 @@
                 android:src="@drawable/luzl" />
 
             <ImageView
-                android:id="@+id/btn5"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:id="@+id/btnnn2"
+                android:background="@drawable/rounded_border2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:padding="5dp"
+                android:src="@drawable/luzl" />
+
+            <ImageView
+                android:id="@+id/btnnn3"
+                android:background="@drawable/rounded_border2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:padding="5dp"
+                android:src="@drawable/luzl" />
+
+            <ImageView
+                android:id="@+id/btnnn4"
+                android:background="@drawable/rounded_border2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:padding="5dp"
+                android:src="@drawable/luzl" />
+
+            <ImageView
+                android:id="@+id/btnnn5"
+                android:background="@drawable/rounded_border2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
@@ -153,9 +272,10 @@
                 android:src="@drawable/lupa" />
 
             <ImageView
-                android:id="@+id/btn6"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:id="@+id/btnnn6"
+                android:background="@drawable/rounded_border2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
