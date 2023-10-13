@@ -21,4 +21,8 @@
     <string name="iprecio">Precio</string>
     <string name="nf">Producto no encontrado</string>
     <string name="searchp">¿Que producto deseas editar?</string>
+    <string name="pdest">Productos destacados</string>
+    <string name="pnov">Novedades</string>
+    <string name="price">"Precio: "</string>
+
 </resources>

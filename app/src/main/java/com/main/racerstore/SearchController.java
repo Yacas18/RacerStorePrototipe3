@@ -30,7 +30,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -420,7 +422,7 @@ public class SearchController{
                 .build();
         imge.setController(controller);
     }
-    public static String extractVideoId(String youtubeUrl,Context context) {
+    /*public static String extractVideoId(String youtubeUrl,Context context) {
         if (youtubeUrl == null || youtubeUrl.isEmpty()) {
             Toast.makeText(context,"No se adjunto URL",Toast.LENGTH_SHORT).show();
             return ""; // Devolver una cadena vacía si la entrada es nula o vacía
@@ -436,7 +438,7 @@ public class SearchController{
             Toast.makeText(context,"Link invalido",Toast.LENGTH_SHORT).show();
         }
         return videoId != null? videoId : "";
-    }
+    }*/
     public static String isYouTubeUrl(String url,Context context) {
         if (url == null || url.isEmpty()) {
             Toast.makeText(context, "No se adjunto URL", Toast.LENGTH_SHORT).show();
@@ -455,8 +457,9 @@ public class SearchController{
         }else{
             Toast.makeText(context,"Link invalido, no se guardo enlace",Toast.LENGTH_SHORT).show();
         }
-        return videoId != null ? url : "";
+        return videoId != null ? videoId : "";
     }
+
 
 }
 

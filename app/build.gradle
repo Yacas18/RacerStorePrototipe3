@@ -10,7 +10,7 @@ android {
         applicationId "com.main.racerstore"
         minSdk 25
         targetSdk 33
-        versionCode 1
+        versionCode 3
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -60,4 +60,6 @@ dependencies {
     implementation 'com.facebook.fresco:fresco:2.6.0'
     implementation 'me.relex:photodraweeview:2.1.0'
     implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
 }

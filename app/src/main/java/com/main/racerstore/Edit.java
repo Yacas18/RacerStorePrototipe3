@@ -9,6 +9,7 @@ import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -22,8 +23,11 @@ import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
 
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,7 +65,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class Edit extends AppCompatActivity implements ProductAdapterEdit.OnProductClickListener {
-
+    public Context context;
     private boolean isPlaying = false;
     private boolean isButtonEnabled = true;
     private SearchController searchController;
@@ -69,11 +73,12 @@ public class Edit extends AppCompatActivity implements ProductAdapterEdit.OnProd
     private ProductAdapterEdit productAdapter;
     private List<Product> productList = new ArrayList<>();
     private String cod = "";
-    private String linkdeyutu = "";
+    public String linkdeyutu = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editp);
+        this.context=context;
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -184,13 +189,40 @@ public class Edit extends AppCompatActivity implements ProductAdapterEdit.OnProd
                 editl.setContentView(R.layout.inpurledt);
                 EditText youtubeedt = editl.findViewById(R.id.youtubedt);
                 Button saveedt = editl.findViewById(R.id.saveedt);
-                youtubeedt.setText(product.getVideoURL());
+                Button ver = editl.findViewById(R.id.view);
+                String videoproducto = "https://www.youtube.com/watch?v="+(product.getVideoURL());
+                if ((product.getVideoURL())==""){
+                    youtubeedt.setText("");
+                    ver.setVisibility(View.GONE);
+                }else {
+                    youtubeedt.setText(videoproducto);
+                }
                 saveedt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        linkdeyutu = youtubeedt.getText().toString();
+                        linkdeyutu = searchController.isYouTubeUrl(youtubeedt.getText().toString(),Edit.this);
                         Toast.makeText(Edit.this, "Se registro link", Toast.LENGTH_SHORT).show();
+                        Log.i("ID DE VIDEO",linkdeyutu);
                         editl.dismiss();
+                    }
+                });
+                ver.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(Edit.this,"Cargando video",Toast.LENGTH_SHORT).show();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Edit.this);
+                        LayoutInflater inflater = LayoutInflater.from(Edit.this);
+                        View dialogView = inflater.inflate(R.layout.player_video, null);
+                        builder.setView(dialogView);
+
+                        WebView webView = dialogView.findViewById(R.id.playerView);
+                        String codvid = product.getVideoURL();
+                        String video = "<iframe width=\"350sp\" height=\"250sp\" src=\"https://www.youtube.com/embed/"+codvid+"?autoplay=1&controls=0&showinfo=0&rel=0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>";
+                        webView.loadData(video,"text/html","utf-8");
+                        webView.getSettings().setJavaScriptEnabled(true);
+                        webView.setWebChromeClient(new WebChromeClient());
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
                     }
                 });
                 editl.show();

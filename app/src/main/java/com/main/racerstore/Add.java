@@ -179,7 +179,7 @@ public class Add extends AppCompatActivity {
         searchController.enviarDatosAlServidorAdd(Add.this,("http://circulinasperu.com/RacerStore/insert.php"), codigo,categoria, nombre, descripcion, precio, video,ubicacion);
         Log.i("VARIABLE",video);
     }
-
+// FUNCIONALIDAD DE INSERTR LINK DE VIDEO Y REPRODUCRI EL VIDEO 
     public String getStringImagen(Bitmap bmp) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);

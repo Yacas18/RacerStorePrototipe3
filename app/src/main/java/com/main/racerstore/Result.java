@@ -48,11 +48,13 @@ public class Result extends AppCompatActivity {
     private static final String TAG = "Result";
     private Context context;
     public int refreshing=0;
+    public RecyclerView reci;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.result);
         Button btncroquis = findViewById(R.id.croquis);
+        reci = findViewById(R.id.recyclerView);
         searchController = new SearchController(Result.this);
         txtBuscar = findViewById(R.id.txtbuscar);
         Intent intent = getIntent();
@@ -95,18 +97,24 @@ public class Result extends AppCompatActivity {
             public void onClick(View v) {
                 Dialog popupDialog = new Dialog(Result.this);
                 popupDialog.setContentView(R.layout.mapracer);
-                // Obtener la referencia a la ImageView del popup
-                PhotoView imgv = popupDialog.findViewById(R.id.imageView);
+
+// Obtener la referencia al contenedor del popup
                 RelativeLayout popup = popupDialog.findViewById(R.id.layu2);
-                // Mostrar el popup con un efecto de crecimiento
+
+// Configura el fondo redondeado
+                popup.setBackgroundResource(R.drawable.rounded_border2);
+
+// Mostrar el popup con un efecto de crecimiento
                 popup.setScaleX(0);
                 popup.setScaleY(0);
                 popup.animate().scaleX(1).scaleY(1).setDuration(300).start();
-                //Mostrar el popup dialog del mapa
+
+// Resto del código para mostrar el diálogo
                 txtBuscar.clearFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(txtBuscar.getWindowToken(), 0);
                 popupDialog.show();
+
             }
         });
         refresh.setOnClickListener(new View.OnClickListener() {

@@ -39,6 +39,9 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import com.airbnb.lottie.LottieAnimationView;
 
@@ -105,7 +108,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             @Override
             public void onClick(View v) {
                 //CLICK EN IMAGEN METO((getImgrt()) == 1 || (getImgrt()) == null || (getImgrt()).equals(""))
-                if(!TextUtils.isEmpty(producto.getImgrt())){
+                if(isImageValid(producto.getImgrt())){
                     Dialog popupDialog = new Dialog(context);
                     popupDialog.setContentView(R.layout.item_image);
                     PhotoDraweeView imagdd = popupDialog.findViewById(R.id.imageView);
@@ -113,7 +116,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     popupDialog.show();
 
                 }else{
-                    Toast.makeText(context, "Producto sin imagen", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "Producto sin imagen", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -234,7 +237,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             builder.setView(dialogView);
 
             WebView webView = dialogView.findViewById(R.id.playerView);
-            String codvid = searchController.extractVideoId(producto.getVideoURL(),context);
+            String codvid = producto.getVideoURL();
             String video = "<iframe width=\"350sp\" height=\"250sp\" src=\"https://www.youtube.com/embed/"+codvid+"?autoplay=1&controls=0&showinfo=0&rel=0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>";
             webView.loadData(video,"text/html","utf-8");
             webView.getSettings().setJavaScriptEnabled(true);
@@ -273,5 +276,26 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             playingvid = itemView.findViewById(R.id.playingvid);
             tvUbicacion = itemView.findViewById(R.id.tvUbicacion);
         }
+    }
+    public boolean isImageValid(String imageUrl) {
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(imageUrl);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("HEAD");
+            String contentType = connection.getHeaderField("Content-Type");
+
+            // Comprueba si el tipo de contenido es una imagen
+            return contentType != null && contentType.startsWith("image/");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+
+        // Si no se puede determinar si es una imagen válida, considera que no lo es
+        return false;
     }
 }

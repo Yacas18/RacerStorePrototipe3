@@ -6,7 +6,8 @@
     android:id="@+id/layu"
     android:layout_width="350dp"
     android:layout_height="600dp"
-    android:background="#1AEA7979"
+
+
     >
     <!-- popup_image.xml -->
 

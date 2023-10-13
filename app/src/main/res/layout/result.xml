@@ -39,6 +39,7 @@
     </RelativeLayout>
 
     <SearchView
+        android:background="@drawable/rounded_border"
         android:id="@+id/txtbuscar"
         android:layout_width="224dp"
         android:layout_height="78dp"
@@ -77,6 +78,7 @@
             app:lottie_fileName="check.json"
             app:lottie_loop="false"/>
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/rela2"
         android:layout_width="match_parent"
@@ -84,20 +86,20 @@
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animation1"
-            android:layout_height="400dp"
             android:layout_width="match_parent"
+            android:layout_height="400dp"
             android:layout_marginTop="120dp"
-            app:lottie_loop="true"
             app:lottie_autoPlay="true"
-            app:lottie_fileName="notfoung.json" />
+            app:lottie_fileName="notfoung.json"
+            app:lottie_loop="true" />
 
         <TextView
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_below="@+id/animation1"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
+            android:gravity="center"
             android:text="@string/nf"
             android:textSize="25dp"
             android:textStyle="bold" />

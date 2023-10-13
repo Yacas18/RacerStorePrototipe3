@@ -8,8 +8,6 @@ public class Product {
     private String precio;
     private String imgrt;
     private String videoURL;
-    private String ipserser = "http://192.168.1.41/RacerStore/img";
-    private static String ip= "http://192.168.1.41";
     private String ubicacion;
     public Product(String codigo, String categoria, String nombre, String descripcion, String precio, String imgrt, String videoURL,String ubicacion) {
         this.codigo = codigo;
