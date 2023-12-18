@@ -1,7 +1,9 @@
 package com.main.racerstore;
 
+import static com.main.racerstore.Add.REQUEST_IMAGE_CAPTURE;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,12 +11,17 @@ import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -22,6 +29,7 @@ import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
 
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +50,11 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.squareup.picasso.Picasso;
@@ -51,9 +64,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 import me.relex.photodraweeview.PhotoDraweeView;
 import okhttp3.Call;
@@ -65,6 +86,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class Edit extends AppCompatActivity implements ProductAdapterEdit.OnProductClickListener {
+    Product product;
     public Context context;
     private boolean isPlaying = false;
     private boolean isButtonEnabled = true;
@@ -74,6 +96,13 @@ public class Edit extends AppCompatActivity implements ProductAdapterEdit.OnProd
     private List<Product> productList = new ArrayList<>();
     private String cod = "";
     public String linkdeyutu = "";
+    int PICK_IMAGE_REQUEST = 1;
+    private Uri imageUri;
+    private RelativeLayout mainLayout;
+    private Bitmap bitmap;
+    String KEY_IMAGE = "foto";
+    String KEY_NOMBRE = "nombre";
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +114,7 @@ public class Edit extends AppCompatActivity implements ProductAdapterEdit.OnProd
         productAdapter = new ProductAdapterEdit(productList, this, searchController);
         productAdapter.setOnProductClickListener(this);
         recyclerView.setAdapter(productAdapter);
-        // ...
+        mainLayout =findViewById(com.airbnb.lottie.R.id.software);
 
         // Obtén la instancia de la clase SearchController
         searchController = new SearchController(this);
@@ -131,7 +160,7 @@ public class Edit extends AppCompatActivity implements ProductAdapterEdit.OnProd
                 String ubicacion = jsonObject.getString("ubicacion");
                 Product product = new Product(codigo, categoria, nombre, descripcion, precio, imgrt, videoURL,ubicacion);
                 productList.add(product);
-                cod = codigo;
+                cod = jsonObject.getString("codigo");
             }
 
             productAdapter.notifyDataSetChanged();
@@ -191,7 +220,7 @@ public class Edit extends AppCompatActivity implements ProductAdapterEdit.OnProd
                 Button saveedt = editl.findViewById(R.id.saveedt);
                 Button ver = editl.findViewById(R.id.view);
                 String videoproducto = "https://www.youtube.com/watch?v="+(product.getVideoURL());
-                if ((product.getVideoURL())==""){
+                if ((Objects.equals(product.getVideoURL(), ""))||((product.getVideoURL())==null)){
                     youtubeedt.setText("");
                     ver.setVisibility(View.GONE);
                 }else {
@@ -229,9 +258,18 @@ public class Edit extends AppCompatActivity implements ProductAdapterEdit.OnProd
             }
         });
         EditB.setOnClickListener(new View.OnClickListener() {
+            // Variables para almacenar los valores originales
+            String originalCodigo = codigoEditText.getText().toString();
+            String originalCategoria = categoriaEditText.getText().toString();
+            String originalNombre = nombreEditText.getText().toString();
+            String originalDescripcion = descripcionEditText.getText().toString();
+            String originalPrecio = precioEditText.getText().toString();
+            String originalVideoURL = linkdeyutu;
+            String originalUbicacion = ubi.getSelectedItem().toString();
+
             @Override
             public void onClick(View v) {
-                SearchController searchController = new SearchController(Edit.this);
+                // Obtener los valores actuales
                 String id = idcodigo.getText().toString();
                 String codigo = codigoEditText.getText().toString();
                 String categoria = categoriaEditText.getText().toString();
@@ -240,58 +278,69 @@ public class Edit extends AppCompatActivity implements ProductAdapterEdit.OnProd
                 String precio = precioEditText.getText().toString();
                 String videoURL = linkdeyutu;
                 String ubicacion = ubi.getSelectedItem().toString();
-                AlertDialog.Builder builder = new AlertDialog.Builder(Edit.this);
-                builder.setTitle("Confirmación");
-                builder.setMessage("Estas modificando la información del producto ¿Estas seguro?");
-                builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Acciones a realizar si se confirma (Sí)
-                        searchController.enviarDatosAlServidorEdit(Edit.this,("http://circulinasperu.com/RacerStore/editp.php"),id, codigo,categoria, nombre, descripcion, precio, videoURL, ubicacion);
-                        viewSwitcher.showNext();
-                        animationView.addAnimatorListener(new Animator.AnimatorListener(){
-                            @Override
-                            public void onAnimationStart(@NonNull Animator animation) {
 
-                            }
+                // Verificar si se realizaron cambios
+                boolean cambiosRealizados = !codigo.equals(originalCodigo) ||
+                        !categoria.equals(originalCategoria) ||
+                        !nombre.equals(originalNombre) ||
+                        !descripcion.equals(originalDescripcion) ||
+                        !precio.equals(originalPrecio) ||
+                        !videoURL.equals(originalVideoURL) ||
+                        !ubicacion.equals(originalUbicacion);
 
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                // La animación ha terminado, aquí puedes realizar las acciones adicionales
-                                // como cerrar el layout, mostrar el popupDialog y reiniciar la actividad
-                                popupDialog.dismiss();
-                                Intent intent = getIntent(); // Obtener el intento actual
-                                finish(); // Finalizar la actividad actual
-                                startActivity(intent); // Iniciar la actividad nuevamente
-                            }
+                if (cambiosRealizados) {
+                    // Mostrar el cuadro de diálogo de confirmación
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Edit.this);
+                    builder.setTitle("Confirmación");
+                    builder.setMessage("Estas modificando la información del producto ¿Estas seguro?");
+                    builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Acciones a realizar si se confirma (Sí)
+                            searchController.enviarDatosAlServidorEdit(Edit.this,("http://circulinasperu.com/RacerStore/editp.php"), id, codigo, categoria, nombre, descripcion, precio, videoURL, ubicacion);
+                            viewSwitcher.showNext();
+                            animationView.addAnimatorListener(new Animator.AnimatorListener(){
+                                @Override
+                                public void onAnimationStart(@NonNull Animator animation) {
 
-                            @Override
-                            public void onAnimationCancel(@NonNull Animator animation) {
+                                }
 
-                            }
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    // La animación ha terminado, aquí puedes realizar las acciones adicionales
+                                    // como cerrar el layout, mostrar el popupDialog y reiniciar la actividad
+                                    popupDialog.dismiss();
+                                    Intent intent = getIntent(); // Obtener el intento actual
+                                    finish(); // Finalizar la actividad actual
+                                    startActivity(intent); // Iniciar la actividad nuevamente
+                                }
 
-                            @Override
-                            public void onAnimationRepeat(@NonNull Animator animation) {
+                                @Override
+                                public void onAnimationCancel(@NonNull Animator animation) {
 
-                            }
-                        });
-                        animationView.playAnimation();
-                    }
-                });
+                                }
 
-                // Configura el botón negativo (No)
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Acciones a realizar si se cancela (No)
-                        dialog.dismiss(); // Cierra el diálogo
-                    }
-                });
+                                @Override
+                                public void onAnimationRepeat(@NonNull Animator animation) {
 
-                // Muestra el diálogo
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
+                                }
+                            });
+                            animationView.playAnimation();
+                        }
+                    });
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Acciones a realizar si se cancela (No)
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else {
+                    // Mostrar un Toast indicando que no se realizaron cambios
+                    Toast.makeText(Edit.this, "No se han realizado cambios", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -301,13 +350,14 @@ public class Edit extends AppCompatActivity implements ProductAdapterEdit.OnProd
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(Edit.this);
                 builder.setTitle("Confirmación");
-                builder.setMessage("Estas eliminando el producto de la faz de la tierra¿Estas seguro?");
+                builder.setMessage("Estas eliminando el producto: "+nombreEditText.getText().toString()+" ¿Estas seguro?");
                 builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Acciones a realizar si se confirma (Sí)
+                        Log.i("PRODUCTO",idcodigo.getText().toString());
                         SearchController searchController = new SearchController(Edit.this);
-                        searchController.eliminarProducto(Edit.this,cod);
+                        searchController.eliminarProducto(Edit.this,idcodigo.getText().toString());
                         viewSwitcherdel.showNext();
                         animationView2.addAnimatorListener(new Animator.AnimatorListener(){
                             @Override

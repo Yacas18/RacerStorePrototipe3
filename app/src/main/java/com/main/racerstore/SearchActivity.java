@@ -56,20 +56,20 @@ import me.relex.photodraweeview.PhotoDraweeView;
 public class SearchActivity extends AppCompatActivity {
     private Handler mHandler = new Handler();
     private Runnable mRunnable;
-    private static final int DELAY_MILLISECONDS = 5000; // 5 segundos
-    RelativeLayout imgpro;
-    TextView txt1,txt2;
-    ImageView img1,img2;
+    private static final int DELAY_MILLISECONDS = 7000; // 5 segundos
+    TextView txt1,txt2,txt3,txt4;
+    ImageView img1,img2,img3,img4;
     private HorizontalScrollView horizontalScrollView2;
     private boolean isButtonEnabled = true;
+    private LinearLayout ln1;
     private LinearLayout ln2;
     private EditText tbuscar;
     private SearchController searchController;
     private Animation buttonAnimation;
-    private static final long TIEMPO_LIMITE_SALIDA = 5000; // 2 segundos
+    private static final long TIEMPO_LIMITE_SALIDA = 2000; // 2 segundos
     private long tiempoUltimaPulsacion = 0;
     ImageView btn1,btn2,btn3,btn4,btn5,btn6;
-    private boolean cargaPeriodicaHabilitada = true;
+    public boolean cargaPeriodicaHabilitada = true;
     public boolean isAutoScrollEnabled2 = true;
     @SuppressLint("MissingInflatedId")
     @Override
@@ -77,8 +77,7 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         cargarImagenesAleatorias();
-        cargarImagenesAleatorias2();
-        ln2 = findViewById(R.id.ln2);
+        //ln2 = findViewById(R.id.ln2);
         btn1 = findViewById(R.id.btn1);
         btn2 = findViewById(R.id.btn2);
         btn3 = findViewById(R.id.btn3);
@@ -181,8 +180,8 @@ public class SearchActivity extends AppCompatActivity {
                 return true;
             }
         });*/
-        horizontalScrollView2 = findViewById(R.id.horizontalScrollView3);
-        autoScroll2();
+        //horizontalScrollView2 = findViewById(R.id.horizontalScrollView3);
+        //autoScroll2();
         iniciarCargaPeriodica();
     }
 
@@ -244,15 +243,25 @@ public class SearchActivity extends AppCompatActivity {
                                         String desp2 = item2.getString("descripcion");
                                         String pric2 = item2.getString("precio");
                                         String imageUrl2 = item2.getString("imgrt");
+                                        JSONObject item3 = response.getJSONObject(2);
+                                        String productName3 = item3.getString("nombre");
+                                        String cat3 = item3.getString("categoria");
+                                        String desp3 = item3.getString("descripcion");
+                                        String pric3 = item3.getString("precio");
+                                        String imageUrl3 = item3.getString("imgrt");
+                                        JSONObject item4 = response.getJSONObject(3);
+                                        String productName4 = item4.getString("nombre");
+                                        String cat4 = item4.getString("categoria");
+                                        String desp4 = item4.getString("descripcion");
+                                        String pric4 = item4.getString("precio");
+                                        String imageUrl4 = item4.getString("imgrt");
                                         // Comprueba si la URL es una imagen válida antes de cargarla
-                                        if (isImageValid(imageUrl)) {
+                                        if ((cargaPeriodicaHabilitada)) {
                                             // Crea la vista de la imagen y cárgala en el hilo principal
                                             runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    if(cargaPeriodicaHabilitada){
-                                                        Load(productName, productName2, imageUrl, imageUrl2,cat,cat2,desp,desp2,pric,pric2);
-                                                    }
+                                                    Load(productName, productName2,productName3,productName4, imageUrl, imageUrl2,imageUrl3,imageUrl4,cat,cat2,cat3,cat4,desp,desp2,desp3,desp4,pric,pric2,pric3,pric4);
                                                 }
                                             });
                                         }
@@ -276,7 +285,7 @@ public class SearchActivity extends AppCompatActivity {
         Volley.newRequestQueue(this).add(jsonArrayRequest);
     }
 
-    private void cargarImagenesAleatorias2() {
+    /*private void cargarImagenesAleatorias2() {
         // URL del archivo PHP en tu servidor
         String url = "https://circulinasperu.com/RacerStore/ff.php";
 
@@ -332,17 +341,30 @@ public class SearchActivity extends AppCompatActivity {
 
         // Agrega la solicitud a la cola de solicitudes de Volley
         Volley.newRequestQueue(this).add(jsonArrayRequest);
+    }*/
+
+    private boolean isImageValid(String imageUrl) {
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(imageUrl);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("HEAD");
+            String contentType = connection.getHeaderField("Content-Type");
+
+            // Comprueba si el tipo de contenido es una imagen
+            return contentType != null && contentType.startsWith("image/");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+
+        // Si no se puede determinar si es una imagen válida, considera que no lo es
+        return false;
     }
 
-    private void autoScroll() {
-        int duration = 4000; // Duración de la animación en milisegundos
-        int scrollDistance = 1065; // Distancia de desplazamiento en píxeles
-
-        // Mueve el ScrollView horizontal a la derecha
-
-
-        // Detecta el final del desplazamiento
-    }
     private void autoScroll2() {
         int duration = 4000; // Duración de la animación en milisegundos
         int scrollDistance = 1065; // Distancia de desplazamiento en píxeles
@@ -371,19 +393,27 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    public void Load(String n1,String n2,String imgl1,String imgl2,String catego1,String catego2,String descript1,String descript2,String pricep1,String pricep2){
-        imgpro =findViewById(R.id.imgpro);
+    public void Load(String n1,String n2,String n3,String n4,String imgl1,String imgl2,String imgl3,String imgl4,String catego1,String catego2,String catego3,String catego4,String descript1,String descript2,String descript3,String descript4,String pricep1,String pricep2,String pricep3,String pricep4){
         txt1 = findViewById(R.id.txt1);
         txt2 = findViewById(R.id.txt2);
+        txt3 = findViewById(R.id.txt3);
+        txt4 = findViewById(R.id.txt4);
         img1 = findViewById(R.id.imageView1);
         img2 = findViewById(R.id.imageView2);
+        img3 = findViewById(R.id.imageView3);
+        img4 = findViewById(R.id.imageView4);
         txt1.setText(n1);
         txt2.setText(n2);
+        txt3.setText(n3);
+        txt4.setText(n4);
         Picasso.get().load(imgl1).into(img1);
         Picasso.get().load(imgl2).into(img2);
+        Picasso.get().load(imgl3).into(img3);
+        Picasso.get().load(imgl4).into(img4);
         img1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cargaPeriodicaHabilitada=false;
                 Dialog ppo = new Dialog(SearchActivity.this);
                 ppo.setContentView(R.layout.dialogp);
                 ImageView img = ppo.findViewById(R.id.imageProducto);
@@ -397,12 +427,11 @@ public class SearchActivity extends AppCompatActivity {
                 descrip.setText(descript1);
                 price.setText("S/ " + pricep1);
                 Picasso.get().load(imgl1).into(img);
-                cargaPeriodicaHabilitada = false;
                 ppo.show();
+
                 ppo.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        // Restablece el estado de isAutoScrollEnabled a true
                         cargaPeriodicaHabilitada = true;
                     }
                 });
@@ -423,6 +452,7 @@ public class SearchActivity extends AppCompatActivity {
         img2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cargaPeriodicaHabilitada=false;
                 Dialog ppo = new Dialog(SearchActivity.this);
                 ppo.setContentView(R.layout.dialogp);
                 ImageView img = ppo.findViewById(R.id.imageProducto);
@@ -436,12 +466,10 @@ public class SearchActivity extends AppCompatActivity {
                 descrip.setText(descript2);
                 price.setText("S/ " + pricep2);
                 Picasso.get().load(imgl2).into(img);
-                cargaPeriodicaHabilitada = false;
                 ppo.show();
                 ppo.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        // Restablece el estado de isAutoScrollEnabled a true
                         cargaPeriodicaHabilitada = true;
                     }
                 });
@@ -459,9 +487,86 @@ public class SearchActivity extends AppCompatActivity {
                 });
             }
         });
+        img3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cargaPeriodicaHabilitada=false;
+                Dialog ppo = new Dialog(SearchActivity.this);
+                ppo.setContentView(R.layout.dialogp);
+                ImageView img = ppo.findViewById(R.id.imageProducto);
+                TextView name = ppo.findViewById(R.id.tvNombre);
+                TextView cate = ppo.findViewById(R.id.tvCategoria);
+                TextView descrip = ppo.findViewById(R.id.tvDescripcion);
+                TextView price = ppo.findViewById(R.id.tvPrecio);
+                ImageView lista = ppo.findViewById(R.id.list);
+                name.setText(n3);
+                cate.setText(catego3);
+                descrip.setText(descript3);
+                price.setText("S/ " + pricep3);
+                Picasso.get().load(imgl3).into(img);
+                ppo.show();
+                ppo.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        cargaPeriodicaHabilitada = true;
+                    }
+                });
+                lista.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String searchTerm = catego3;
+                        Intent intent = new Intent(SearchActivity.this, Result.class);
+                        intent.putExtra("searchTerm", searchTerm);
+                        startActivity(intent); // Usa el contexto de searchActivity para iniciar la nueva actividad
+
+                        // Realiza la búsqueda del elemento en el adaptador y desplázate hasta él
+                    }
+
+                });
+            }
+        });
+        img4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cargaPeriodicaHabilitada=false;
+                Dialog ppo = new Dialog(SearchActivity.this);
+                ppo.setContentView(R.layout.dialogp);
+                ImageView img = ppo.findViewById(R.id.imageProducto);
+                TextView name = ppo.findViewById(R.id.tvNombre);
+                TextView cate = ppo.findViewById(R.id.tvCategoria);
+                TextView descrip = ppo.findViewById(R.id.tvDescripcion);
+                TextView price = ppo.findViewById(R.id.tvPrecio);
+                ImageView lista = ppo.findViewById(R.id.list);
+                name.setText(n4);
+                cate.setText(catego4);
+                descrip.setText(descript4);
+                price.setText("S/ " + pricep4);
+                Picasso.get().load(imgl4).into(img);
+                ppo.show();
+                ppo.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        cargaPeriodicaHabilitada = true;
+                    }
+                });
+                lista.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String searchTerm = catego4;
+                        Intent intent = new Intent(SearchActivity.this, Result.class);
+                        intent.putExtra("searchTerm", searchTerm);
+                        startActivity(intent); // Usa el contexto de searchActivity para iniciar la nueva actividad
+
+                        // Realiza la búsqueda del elemento en el adaptador y desplázate hasta él
+                    }
+
+                });
+            }
+        });
+
     }
     private void iniciarCargaPeriodica() {
-        if (cargaPeriodicaHabilitada) {
+        if(cargaPeriodicaHabilitada) {
             mRunnable = new Runnable() {
                 @Override
                 public void run() {
@@ -474,25 +579,14 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    public boolean isImageValid(String imageUrl) {
-        HttpURLConnection connection = null;
-        try {
-            URL url = new URL(imageUrl);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("HEAD");
-            String contentType = connection.getHeaderField("Content-Type");
-
-            // Comprueba si el tipo de contenido es una imagen
-            return contentType != null && contentType.startsWith("image/");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
-
-        // Si no se puede determinar si es una imagen válida, considera que no lo es
-        return false;
+    private void detenerCargaPeriodica() {
+        mHandler.removeCallbacks(mRunnable);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        detenerCargaPeriodica();
+    }
+
 }

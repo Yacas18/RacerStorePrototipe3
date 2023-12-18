@@ -43,6 +43,7 @@
         android:gravity="center"
         android:textColor="@color/black"
         />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -51,69 +52,66 @@
             android:id="@+id/paramd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="60dp"
-            >
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/icodigo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="10dp"
-                android:textColor="@color/black"
                 android:hint="@string/icod"
-                />
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/icategoria"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
-                android:textColor="@color/black"
                 android:hint="@string/icat"
-                />
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/inombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
-                android:textColor="@color/black"
-                android:hint="@string/inam" />
+                android:hint="@string/inam"
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/idescripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
-                android:textColor="@color/black"
-                android:hint="@string/ides"/>
+                android:hint="@string/ides"
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/iprecio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
-                android:textColor="@color/black"
                 android:hint="@string/iprecio"
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                android:textColor="@color/black" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                >
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp">
 
                 <Spinner
                     android:id="@+id/spinn"
@@ -132,14 +130,16 @@
                     android:gravity="center" />
                 />
             </RelativeLayout>
-            <RelativeLayout android:layout_height="wrap_content"  android:layout_width="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <RelativeLayout
                     android:layout_width="50dp"
                     android:layout_height="60dp"
-                    android:layout_marginTop="20dp"
                     android:layout_marginStart="30dp"
-                    >
+                    android:layout_marginTop="20dp">
 
                     <ViewSwitcher
                         android:id="@+id/viewSwitcherdel"
@@ -164,36 +164,41 @@
                             app:lottie_loop="false" />
                     </ViewSwitcher>
                 </RelativeLayout>
-            <RelativeLayout android:layout_height="100dp"  android:layout_width="wrap_content">
-            <ViewSwitcher
-                    android:id="@+id/viewSwitchered"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginStart="150dp"
-                    android:layout_marginTop="10dp"
-                >
-                    <Button
-                    android:id="@+id/intodate"
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="23dp"
-                    android:layout_marginBottom="25dp"
-                    android:background="@drawable/edit_edit" />
-                    <com.airbnb.lottie.LottieAnimationView
-                        android:id="@+id/animationView"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:foregroundGravity="center"
-                        app:lottie_autoPlay="false"
-                        app:lottie_fileName="addp.json"
-                        app:lottie_loop="false"/>
-                </ViewSwitcher>
-            </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp">
+
+                    <ViewSwitcher
+                        android:id="@+id/viewSwitchered"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginStart="150dp"
+                        android:layout_marginTop="10dp">
+
+                        <Button
+                            android:id="@+id/intodate"
+                            android:layout_width="75dp"
+                            android:layout_height="75dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="23dp"
+                            android:layout_marginBottom="25dp"
+                            android:background="@drawable/edit_edit" />
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/animationView"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:foregroundGravity="center"
+                            app:lottie_autoPlay="false"
+                            app:lottie_fileName="addp.json"
+                            app:lottie_loop="false" />
+                    </ViewSwitcher>
+                </RelativeLayout>
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

@@ -115,11 +115,14 @@
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/imageView"
-                    android:layout_width="150dp"
-                    android:layout_height="140dp"
-                    android:layout_marginStart="30dp"
+                    android:layout_width="131dp"
+                    android:layout_height="106dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="47dp"
                     android:layout_marginTop="-20dp"
                     android:layout_marginEnd="55dp"
+                    android:layout_marginBottom="-1dp"
                     app:lottie_autoPlay="true"
                     app:lottie_fileName="gallery.json"
                     app:lottie_loop="true" />

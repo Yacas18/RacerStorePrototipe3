@@ -55,7 +55,7 @@ public class Add extends AppCompatActivity {
     ImageView iv;
     TextView et;
     ImageView cyt;
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    public static final int REQUEST_IMAGE_CAPTURE = 1;
     Bitmap bitmap;
     int PICK_IMAGE_REQUEST = 1;
     private RelativeLayout mainLayout;

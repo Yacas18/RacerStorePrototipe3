@@ -29,6 +29,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -208,6 +211,28 @@ public class Result extends AppCompatActivity {
             player.stop();
             player.release();
         }
+    }
+
+    private boolean isImageValid(String imageUrl) {
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(imageUrl);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("HEAD");
+            String contentType = connection.getHeaderField("Content-Type");
+
+            // Comprueba si el tipo de contenido es una imagen
+            return contentType != null && contentType.startsWith("image/");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+
+        // Si no se puede determinar si es una imagen válida, considera que no lo es
+        return false;
     }
 }
 

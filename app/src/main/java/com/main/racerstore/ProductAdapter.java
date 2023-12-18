@@ -108,16 +108,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             @Override
             public void onClick(View v) {
                 //CLICK EN IMAGEN METO((getImgrt()) == 1 || (getImgrt()) == null || (getImgrt()).equals(""))
-                if(isImageValid(producto.getImgrt())){
                     Dialog popupDialog = new Dialog(context);
                     popupDialog.setContentView(R.layout.item_image);
                     PhotoDraweeView imagdd = popupDialog.findViewById(R.id.imageView);
                     searchController.imagepopup(producto.getImgrt(), imagdd);
                     popupDialog.show();
-
-                }else{
-                    //Toast.makeText(context, "Producto sin imagen", Toast.LENGTH_SHORT).show();
-                }
             }
         });
         holder.botonlocate.setOnClickListener(new View.OnClickListener(){
@@ -276,26 +271,5 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             playingvid = itemView.findViewById(R.id.playingvid);
             tvUbicacion = itemView.findViewById(R.id.tvUbicacion);
         }
-    }
-    public boolean isImageValid(String imageUrl) {
-        HttpURLConnection connection = null;
-        try {
-            URL url = new URL(imageUrl);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("HEAD");
-            String contentType = connection.getHeaderField("Content-Type");
-
-            // Comprueba si el tipo de contenido es una imagen
-            return contentType != null && contentType.startsWith("image/");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
-
-        // Si no se puede determinar si es una imagen válida, considera que no lo es
-        return false;
     }
 }
