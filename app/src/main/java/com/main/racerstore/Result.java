@@ -213,27 +213,6 @@ public class Result extends AppCompatActivity {
         }
     }
 
-    private boolean isImageValid(String imageUrl) {
-        HttpURLConnection connection = null;
-        try {
-            URL url = new URL(imageUrl);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("HEAD");
-            String contentType = connection.getHeaderField("Content-Type");
-
-            // Comprueba si el tipo de contenido es una imagen
-            return contentType != null && contentType.startsWith("image/");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
-
-        // Si no se puede determinar si es una imagen válida, considera que no lo es
-        return false;
-    }
 }
 
 

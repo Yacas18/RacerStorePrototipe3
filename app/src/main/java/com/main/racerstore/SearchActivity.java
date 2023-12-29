@@ -173,15 +173,7 @@ public class SearchActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        /*horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // Consume todos los eventos táctiles para evitar la interacción
-                return true;
-            }
-        });*/
-        //horizontalScrollView2 = findViewById(R.id.horizontalScrollView3);
-        //autoScroll2();
+
         iniciarCargaPeriodica();
     }
 
@@ -283,114 +275,6 @@ public class SearchActivity extends AppCompatActivity {
 
         // Agrega la solicitud a la cola de solicitudes de Volley
         Volley.newRequestQueue(this).add(jsonArrayRequest);
-    }
-
-    /*private void cargarImagenesAleatorias2() {
-        // URL del archivo PHP en tu servidor
-        String url = "https://circulinasperu.com/RacerStore/ff.php";
-
-        // Crea una solicitud de JSONArray utilizando Volley
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        // Procesa la respuesta en segundo plano
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    for (int i = 0; i < response.length(); i++) {
-                                        JSONObject item = response.getJSONObject(i);
-                                        String productName = item.getString("nombre");
-                                        String cat = item.getString("categoria");
-                                        String desp = item.getString("descripcion");
-                                        String pric = item.getString("precio");
-                                        String imageUrl = item.getString("imgrt");
-
-                                        // Comprueba si la URL es una imagen válida antes de cargarla
-                                        if (isImageValid(imageUrl)) {
-                                            // Crea la vista de la imagen y cárgala en el hilo principal
-                                            runOnUiThread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    // Crea una nueva ProductCardView y pásale la referencia de SearchActivity
-                                                    ProductCardView2 customCardView = new ProductCardView2(SearchActivity.this, imageUrl, productName,cat,desp,pric, SearchActivity.this);
-
-                                                    // Agrega la ProductCardView al contenedor (LinearLayout en este caso)
-                                                    ln2.addView(customCardView);
-                                                }
-                                            });
-                                        } else {
-                                            // No es una imagen válida, puedes manejarlo de acuerdo a tus necesidades
-                                        }
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }).start();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Manejo de errores
-                        Log.e("Error de Volley", error.toString());
-                    }
-                });
-
-        // Agrega la solicitud a la cola de solicitudes de Volley
-        Volley.newRequestQueue(this).add(jsonArrayRequest);
-    }*/
-
-    private boolean isImageValid(String imageUrl) {
-        HttpURLConnection connection = null;
-        try {
-            URL url = new URL(imageUrl);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("HEAD");
-            String contentType = connection.getHeaderField("Content-Type");
-
-            // Comprueba si el tipo de contenido es una imagen
-            return contentType != null && contentType.startsWith("image/");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
-
-        // Si no se puede determinar si es una imagen válida, considera que no lo es
-        return false;
-    }
-
-    private void autoScroll2() {
-        int duration = 4000; // Duración de la animación en milisegundos
-        int scrollDistance = 1065; // Distancia de desplazamiento en píxeles
-
-        // Mueve el ScrollView horizontal a la derecha
-        horizontalScrollView2.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (isAutoScrollEnabled2) {
-                    horizontalScrollView2.smoothScrollBy(scrollDistance, 0);
-                }
-                horizontalScrollView2.postDelayed(this, duration);
-            }
-        }, duration);
-
-        // Detecta el final del desplazamiento
-        horizontalScrollView2.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                int maxScrollX = ln2.getWidth() - horizontalScrollView2.getWidth();
-                if (horizontalScrollView2.getScrollX() == maxScrollX) {
-                    // Cuando llega al final, vuelve al principio sin animación
-                    horizontalScrollView2.smoothScrollTo(0, 0);
-                }
-            }
-        });
     }
 
     public void Load(String n1,String n2,String n3,String n4,String imgl1,String imgl2,String imgl3,String imgl4,String catego1,String catego2,String catego3,String catego4,String descript1,String descript2,String descript3,String descript4,String pricep1,String pricep2,String pricep3,String pricep4){

@@ -346,47 +346,6 @@ public class SearchController{
         });
     }
 
-    //METODO DE REPRODUCCION DE VIDEO LOCAL, NO VIABLE
-    /*public void showVideoDialog(String videoURL, Context context) {
-        // Crear el AlertDialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View dialogView = inflater.inflate(R.layout.player_video, null);
-        builder.setView(dialogView);
-
-        // Configurar el reproductor de video y reproducir el video
-        SimpleExoPlayer player = new SimpleExoPlayer.Builder(context).build();
-        PlayerView playerView = dialogView.findViewById(R.id.playerView);
-        playerView.setPlayer(player);
-        playerView.setUseController(true);
-
-        // Configurar el MediaItem del video
-        MediaItem mediaItem = MediaItem.fromUri(videoURL);
-        player.setMediaItem(mediaItem);
-
-        // Preparar y reproducir el video
-        player.prepare();
-        player.play();
-
-        // Configurar el cierre del AlertDialog
-        builder.setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-                    // Detener la reproducción del video y liberar los recursos
-                    player.stop();
-                    player.release();
-                    dialog.dismiss();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        // Mostrar el AlertDialog
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }*/
     public void mostrarLocate(TextView text, String nombre, TextView text2, String locate,String uri, PhotoDraweeView imageloc){
         // Obtener la referencia a la ImageView del popup
         text.setText(nombre);
@@ -422,23 +381,6 @@ public class SearchController{
                 .build();
         imge.setController(controller);
     }
-    /*public static String extractVideoId(String youtubeUrl,Context context) {
-        if (youtubeUrl == null || youtubeUrl.isEmpty()) {
-            Toast.makeText(context,"No se adjunto URL",Toast.LENGTH_SHORT).show();
-            return ""; // Devolver una cadena vacía si la entrada es nula o vacía
-        }
-        String videoId = null;
-        String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
-        Pattern compiledPattern = Pattern.compile(pattern);
-        Matcher matcher = compiledPattern.matcher(youtubeUrl);
-
-        if (matcher.find()) {
-            videoId = matcher.group();
-        }else{
-            Toast.makeText(context,"Link invalido",Toast.LENGTH_SHORT).show();
-        }
-        return videoId != null? videoId : "";
-    }*/
     public static String isYouTubeUrl(String url,Context context) {
         if (url == null || url.isEmpty()) {
             Toast.makeText(context, "No se adjunto URL", Toast.LENGTH_SHORT).show();
